@@ -115,8 +115,10 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
 
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw)
+    plt.grid()
+    plt.xlabel("X")
+    plt.ylabel("Y")
     plt.show()
-
 
 
 
