@@ -102,16 +102,18 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
         c_draw = int(c.get())
         print(a_x_draw, "x +", b_y_draw, "y +", c_draw, "= 0 ")
 
-        for x in range(int(range_beginning.get()), int(range_end.get())):
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
             x_to_draw.append(x)
             y_to_draw.append((0-a_x_draw/b_y_draw)*x + 0-c_draw/b_y_draw)
-
 
     if selected_value.get() == 'quadratic equation':
         a_x_quad_draw = int(a_x_quad.get())
         b_quad_draw = int(b_quad.get())
         c_quad_draw = int(c_quad.get())
         print(a_x_quad_draw, "x² +", b_quad_draw, "x +", c_quad_draw, "= 0 ")
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            x_to_draw.append(x)
+            y_to_draw.append((a_x_quad_draw*x**2 + b_quad_draw*x + c_quad_draw))
 
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw)
