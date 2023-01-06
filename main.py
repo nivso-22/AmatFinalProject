@@ -22,10 +22,12 @@ def change_value(*args):
     # draw range things
     range_label.grid(row=2, column=0)
     range_beginning.grid(row=3, column=0)
+    range_beginning.insert(0, "0")
     x_in_middle.grid(row=3, column=1)
     range_end.grid(row=3, column=2)
+    range_end.insert(0, "0")
 
-    graph_button = Button(function_entry_frame, text="graph", command= lambda: draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad))
+    graph_button = Button(function_entry_frame, text="graph", command= lambda: draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end))
     graph_button.grid(row=4)
 
     root.update()
@@ -87,7 +89,7 @@ def change_value(*args):
     root.update()
 
 
-def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad):
+def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end):
     global selected_value
     print("imagine i made a graph here")
     if selected_value.get() == 'linear equation':
@@ -102,12 +104,11 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad):
         c_quad_draw = int(c_quad.get())
         print(a_x_quad_draw, "x² +", b_quad_draw, "x +", c_quad_draw, "= 0 ")
 
-
+    print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
 
 
 root = Tk()
 root.geometry("150x300")
-
 
 # dropdown menu
 selected_value = StringVar()
