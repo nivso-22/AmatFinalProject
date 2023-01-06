@@ -1,6 +1,7 @@
 from tkinter import *
 import matplotlib.pyplot as plt
 
+
 def change_value(*args):
     global root, beginner_entry, function_entry_frame
     root.geometry("150x300")
@@ -10,8 +11,8 @@ def change_value(*args):
     for widget in function_entry_frame.winfo_children():
         widget.destroy()
 
-    equation_text = Label(function_entry_frame, text="equation:")
-    equation_text.grid(row=0)
+    equation_text = Label(root, text="equation:")
+    equation_text.grid(row=1)
 
     # range variables
     range_label = Label(function_entry_frame, text="range: ")
@@ -28,11 +29,23 @@ def change_value(*args):
     range_end.insert(0, "0")
 
     graph_button = Button(
-        function_entry_frame,
+        root,
         text="graph",
-        command=lambda: draw_graph(a_x, b_y, c, a_x_quad, b_quad,c_quad, range_beginning, range_end)
+        command=lambda: draw_graph(a_x,
+                                   b_y,
+                                   c,
+                                   a_x_quad,
+                                   b_quad,
+                                   c_quad,
+                                   range_beginning,
+                                   range_end,
+                                   a_x_cube,
+                                   b_x_cube,
+                                   c_x_cube,
+                                   d_cube
+                                   )
     )
-    graph_button.grid(row=4)
+    graph_button.grid(row=3)
 
     root.update()
 
@@ -43,6 +56,11 @@ def change_value(*args):
     a_x_quad = Entry(function_entry_frame, width=3)
     b_quad = Entry(function_entry_frame, width=3)
     c_quad = Entry(function_entry_frame, width=3)
+
+    a_x_cube = Entry(function_entry_frame, width=3)
+    b_x_cube = Entry(function_entry_frame, width=3)
+    c_x_cube = Entry(function_entry_frame, width=3)
+    d_cube = Entry(function_entry_frame, width=3)
 
     if drop_value == 'linear equation':
         root.update()
@@ -86,10 +104,32 @@ def change_value(*args):
         root.geometry("185x300")
         root.update()
 
+    if drop_value == 'cubic equation':
+        x_cubed_text = Label(function_entry_frame, text="X³ + ")
+        x_squared_text = Label(function_entry_frame, text="X² + ")
+        x_single_text = Label(function_entry_frame, text="X + ")
+        equals_0_text = Label(function_entry_frame, text=" = 0")
+
+        a_x_cube.grid(row=1, column=0)
+        a_x_cube.insert(0, "0")
+        x_cubed_text.grid(row=1, column=1)
+        b_x_cube.grid(row=1, column=2)
+        b_x_cube.insert(0, "0")
+        x_squared_text.grid(row=1, column=3)
+        c_x_cube.grid(row=1, column=4)
+        c_x_cube.insert(0, "0")
+        x_single_text.grid(row=1, column=5)
+        d_cube.grid(row=1, column=6)
+        d_cube.insert(0, "0")
+        equals_0_text.grid(row=1, column=7)
+
+
+        root.geometry("250x300")
+
     root.update()
 
 
-def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end):
+def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end, a_x_cube, b_x_cube, c_x_cube, d_cube):
     global selected_value
     print("imagine i made a graph here")
 
@@ -115,6 +155,15 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
             x_to_draw.append(x)
             y_to_draw.append((a_x_quad_draw*x**2 + b_quad_draw*x + c_quad_draw))
 
+    if selected_value.get() == 'cubic equation':
+        a_cube_draw = int(a_x_cube.get())
+        b_cube_draw = int(b_x_cube.get())
+        c_cube_draw = int(c_x_cube.get())
+        d_cube_draw = int(d_cube.get())
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            x_to_draw.append(x)
+            y_to_draw.append((a_cube_draw*x**3 + b_cube_draw*x**2 + c_cube_draw*x + d_cube_draw))
+
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw)
     plt.grid()
@@ -123,24 +172,22 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
     plt.show()
 
 
-
 root = Tk()
 root.geometry("150x300")
 
 # dropdown menu
 selected_value = StringVar()
 selected_value.set("select function type")
-options = ['linear equation', 'quadratic equation']
+options = ['linear equation', 'quadratic equation', 'cubic equation']
 dropdown = OptionMenu(root, selected_value,   *options)
 dropdown.grid(row=0)
 selected_value.trace('w', change_value)
 
 
 function_entry_frame = Frame(root)
-function_entry_frame.grid(row=1)
+function_entry_frame.grid(row=2)
 
 beginner_entry = Entry(function_entry_frame, width=20, state='disabled')
 beginner_entry.grid(row=0)
-
 
 root.mainloop()
