@@ -102,9 +102,9 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
         c_draw = int(c.get())
         print(a_x_draw, "x +", b_y_draw, "y +", c_draw, "= 0 ")
 
-    for x in range(int(range_beginning.get()), int(range_end.get())):
-        x_to_draw.append(x)
-        y_to_draw.append((0-a_x_draw/b_y_draw)*x + 0-c_draw/b_y_draw)
+        for x in range(int(range_beginning.get()), int(range_end.get())):
+            x_to_draw.append(x)
+            y_to_draw.append((0-a_x_draw/b_y_draw)*x + 0-c_draw/b_y_draw)
 
 
     if selected_value.get() == 'quadratic equation':
