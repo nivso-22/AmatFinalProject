@@ -27,7 +27,11 @@ def change_value(*args):
     range_end.grid(row=3, column=2)
     range_end.insert(0, "0")
 
-    graph_button = Button(function_entry_frame, text="graph", command= lambda: draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end))
+    graph_button = Button(
+        function_entry_frame,
+        text="graph",
+        command=lambda: draw_graph(a_x, b_y, c, a_x_quad, b_quad,c_quad, range_beginning, range_end)
+    )
     graph_button.grid(row=4)
 
     root.update()
@@ -43,8 +47,6 @@ def change_value(*args):
     if drop_value == 'linear equation':
         root.update()
         # create the equation variables
-
-
         x_plus_text = Label(function_entry_frame, text="X + ")
         y_plus_text = Label(function_entry_frame, text="Y + ")
         equals_0_text = Label(function_entry_frame, text=" = 0")
@@ -65,8 +67,6 @@ def change_value(*args):
 
     if drop_value == 'quadratic equation':
         root.update()
-
-
 
         x_plus_text = Label(function_entry_frame, text="X² + ")
         y_plus_text = Label(function_entry_frame, text="X + ")
@@ -92,11 +92,20 @@ def change_value(*args):
 def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end):
     global selected_value
     print("imagine i made a graph here")
+
+    x_to_draw = []
+    y_to_draw = []
+
     if selected_value.get() == 'linear equation':
         a_x_draw = int(a_x.get())
         b_y_draw = int(b_y.get())
         c_draw = int(c.get())
         print(a_x_draw, "x +", b_y_draw, "y +", c_draw, "= 0 ")
+
+    for x in range(int(range_beginning.get()), int(range_end.get())):
+        x_to_draw.append(x)
+        y_to_draw.append((0-a_x_draw/b_y_draw)*x + 0-c_draw/b_y_draw)
+
 
     if selected_value.get() == 'quadratic equation':
         a_x_quad_draw = int(a_x_quad.get())
@@ -105,6 +114,10 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
         print(a_x_quad_draw, "x² +", b_quad_draw, "x +", c_quad_draw, "= 0 ")
 
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
+    plt.plot(x_to_draw, y_to_draw)
+    plt.show()
+
+
 
 
 root = Tk()
