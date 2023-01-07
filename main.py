@@ -1,5 +1,6 @@
 from tkinter import *
 import matplotlib.pyplot as plt
+import math
 
 
 def change_value(*args):
@@ -44,7 +45,9 @@ def change_value(*args):
                                    c_x_cube,
                                    d_cube,
                                    expo_base,
-                                   exponent
+                                   exponent,
+                                   log_base,
+                                   log_inside
                                    )
     )
     graph_button.grid(row=3)
@@ -66,6 +69,9 @@ def change_value(*args):
 
     expo_base = Entry(function_entry_frame, width=3)
     exponent = Entry(function_entry_frame, width=3)
+
+    log_base = Entry(function_entry_frame, width=3)
+    log_inside = Entry(function_entry_frame, width=3)
 
     if drop_value == 'linear equation':
         root.update()
@@ -142,6 +148,26 @@ def change_value(*args):
         exponent.insert(0, "0")
         exponent.grid(row=1, column=1)
 
+    if drop_value == 'logarithmic equation log a (x)':
+        log_text = Label(function_entry_frame, text="log")
+        log_text.grid(row=1, column=0)
+        log_base.insert(0, "0")
+        log_base.grid(row=1, column=1)
+        log_inside_text = Label(function_entry_frame, text="(x)")
+        log_inside_text.grid(row=1, column=2)
+
+        root.geometry("200x300")
+
+    if drop_value == 'logarithmic equation log x (a)':
+        log_x_text = Label(function_entry_frame, text="log x (")
+        log_x_text.grid(row=1, column=0)
+        log_inside.insert(0, "0")
+        log_inside.grid(row=1, column=1)
+        second_parenthasis_text = Label(function_entry_frame, text=")")
+        second_parenthasis_text.grid(row=1, column=2)
+
+        root.geometry("200x300")
+
     root.update()
 
 
@@ -158,7 +184,9 @@ def draw_graph(a_x,
                c_x_cube,
                d_cube,
                expo_base,
-               exponent
+               exponent,
+               log_base,
+               log_inside
                ):
     global selected_value
     print("imagine i made a graph here")
@@ -206,6 +234,22 @@ def draw_graph(a_x,
             x_to_draw.append(x)
             y_to_draw.append(x**exponent_draw)
 
+    if selected_value.get() == 'logarithmic equation log a (x)':
+        log_base_draw = int(log_base.get())
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            if x <= 0:
+                continue
+            x_to_draw.append(x)
+            y_to_draw.append(math.log(x, log_base_draw))
+
+    if selected_value.get() == 'logarithmic equation log x (a)':
+        log_inside_draw = int(log_inside.get())
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            if x <= 0 or x == 1:
+                continue
+            x_to_draw.append(x)
+            y_to_draw.append(math.log(log_inside_draw, x))
+
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw)
     plt.grid()
@@ -224,7 +268,9 @@ options = ['linear equation',
            'quadratic equation',
            'cubic equation',
            'exponential equation a^x',
-           'exponential equation x^a']
+           'exponential equation x^a',
+           'logarithmic equation log a (x)',
+           'logarithmic equation log x (a)']
 
 dropdown = OptionMenu(root, selected_value,   *options)
 dropdown.grid(row=0)
