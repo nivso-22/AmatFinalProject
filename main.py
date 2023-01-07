@@ -142,11 +142,15 @@ def change_value(*args):
         expo_base.insert(0, "0")
         expo_base_text.grid(row=1, column=1)
 
+        root.geometry("180x300")
+
     if drop_value == 'exponential equation x^a':
         exponent_text = Label(function_entry_frame, text="X^")
         exponent_text.grid(row=1, column=0)
         exponent.insert(0, "0")
         exponent.grid(row=1, column=1)
+
+        root.geometry("180x300")
 
     if drop_value == 'logarithmic equation log a (x)':
         log_text = Label(function_entry_frame, text="log")
