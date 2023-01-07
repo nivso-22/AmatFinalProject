@@ -21,7 +21,7 @@ def change_value(*args):
     range_end = Entry(function_entry_frame, width=3)
 
     # draw range things
-    range_label.grid(row=2, column=0)
+    range_label.grid(row=2, column=1)
     range_beginning.grid(row=3, column=0)
     range_beginning.insert(0, "0")
     x_in_middle.grid(row=3, column=1)
@@ -42,7 +42,9 @@ def change_value(*args):
                                    a_x_cube,
                                    b_x_cube,
                                    c_x_cube,
-                                   d_cube
+                                   d_cube,
+                                   expo_base,
+                                   exponent
                                    )
     )
     graph_button.grid(row=3)
@@ -62,6 +64,9 @@ def change_value(*args):
     c_x_cube = Entry(function_entry_frame, width=3)
     d_cube = Entry(function_entry_frame, width=3)
 
+    expo_base = Entry(function_entry_frame, width=3)
+    exponent = Entry(function_entry_frame, width=3)
+
     if drop_value == 'linear equation':
         root.update()
         # create the equation variables
@@ -70,13 +75,13 @@ def change_value(*args):
         equals_0_text = Label(function_entry_frame, text=" = 0")
 
         # draw the equation variables
-        a_x.grid(row=1,column=0)
+        a_x.grid(row=1, column=0)
         a_x.insert(0, "0")
-        x_plus_text.grid(row=1,column=1)
-        b_y.grid(row=1,column=2)
+        x_plus_text.grid(row=1, column=1)
+        b_y.grid(row=1, column=2)
         b_y.insert(0, "0")
-        y_plus_text.grid(row=1,column=3)
-        c.grid(row=1,column=4)
+        y_plus_text.grid(row=1, column=3)
+        c.grid(row=1, column=4)
         c.insert(0, "0")
         equals_0_text.grid(row=1, column=5)
 
@@ -123,13 +128,38 @@ def change_value(*args):
         d_cube.insert(0, "0")
         equals_0_text.grid(row=1, column=7)
 
+        root.geometry("215x300")
 
-        root.geometry("250x300")
+    if drop_value == 'exponential equation a^x':
+        expo_base_text = Label(function_entry_frame, text=" ^X")
+        expo_base.grid(row=1, column=0)
+        expo_base.insert(0, "0")
+        expo_base_text.grid(row=1, column=1)
+
+    if drop_value == 'exponential equation x^a':
+        exponent_text = Label(function_entry_frame, text="X^")
+        exponent_text.grid(row=1, column=0)
+        exponent.insert(0, "0")
+        exponent.grid(row=1, column=1)
 
     root.update()
 
 
-def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end, a_x_cube, b_x_cube, c_x_cube, d_cube):
+def draw_graph(a_x,
+               b_y,
+               c,
+               a_x_quad,
+               b_quad,
+               c_quad,
+               range_beginning,
+               range_end,
+               a_x_cube,
+               b_x_cube,
+               c_x_cube,
+               d_cube,
+               expo_base,
+               exponent
+               ):
     global selected_value
     print("imagine i made a graph here")
 
@@ -164,6 +194,18 @@ def draw_graph(a_x, b_y, c, a_x_quad, b_quad, c_quad, range_beginning, range_end
             x_to_draw.append(x)
             y_to_draw.append((a_cube_draw*x**3 + b_cube_draw*x**2 + c_cube_draw*x + d_cube_draw))
 
+    if selected_value.get() == 'exponential equation a^x':
+        expo_base_draw = int(expo_base.get())
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            x_to_draw.append(x)
+            y_to_draw.append(expo_base_draw**x)
+
+    if selected_value.get() == 'exponential equation x^a':
+        exponent_draw = int(exponent.get())
+        for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            x_to_draw.append(x)
+            y_to_draw.append(x**exponent_draw)
+
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw)
     plt.grid()
@@ -178,7 +220,12 @@ root.geometry("150x300")
 # dropdown menu
 selected_value = StringVar()
 selected_value.set("select function type")
-options = ['linear equation', 'quadratic equation', 'cubic equation']
+options = ['linear equation',
+           'quadratic equation',
+           'cubic equation',
+           'exponential equation a^x',
+           'exponential equation x^a']
+
 dropdown = OptionMenu(root, selected_value,   *options)
 dropdown.grid(row=0)
 selected_value.trace('w', change_value)
