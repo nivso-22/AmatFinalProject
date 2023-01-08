@@ -256,6 +256,8 @@ def draw_graph(a_x,
 
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw)
+    plt.axvline(x=0, c='black')
+    plt.axhline(y=0, c='black')
     plt.grid()
     plt.xlabel("X")
     plt.ylabel("Y")
