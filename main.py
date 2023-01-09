@@ -1,6 +1,7 @@
 from tkinter import *
 import matplotlib.pyplot as plt
 import math
+from equationClasses import *
 
 
 def select_color(*args):
@@ -206,8 +207,9 @@ def draw_graph(a_x,
                log_base,
                log_inside
                ):
-    global selected_value, color
+    global selected_value, color, past_equations, num_of_equations, past_equation_container
     print("imagine i made a graph here")
+    num_of_equations += 1
 
     x_to_draw = []
     y_to_draw = []
@@ -222,6 +224,9 @@ def draw_graph(a_x,
             x_to_draw.append(x)
             y_to_draw.append((0-a_x_draw/b_y_draw)*x + 0-c_draw/b_y_draw)
 
+        past_equations[num_of_equations] = LinearEquation(a_x_draw, b_y_draw, c_draw)
+        print(past_equations[num_of_equations])
+
     if selected_value.get() == 'quadratic equation':
         a_x_quad_draw = int(a_x_quad.get())
         b_quad_draw = int(b_quad.get())
@@ -230,6 +235,9 @@ def draw_graph(a_x,
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
             x_to_draw.append(x)
             y_to_draw.append((a_x_quad_draw*x**2 + b_quad_draw*x + c_quad_draw))
+
+        past_equations[num_of_equations] = QuadraticEquation(a_x_quad_draw, b_quad_draw, c_quad_draw)
+        print(past_equations[num_of_equations])
 
     if selected_value.get() == 'cubic equation':
         a_cube_draw = int(a_x_cube.get())
@@ -240,6 +248,9 @@ def draw_graph(a_x,
             x_to_draw.append(x)
             y_to_draw.append((a_cube_draw*x**3 + b_cube_draw*x**2 + c_cube_draw*x + d_cube_draw))
 
+        past_equations[num_of_equations] = CubicEquation(a_cube_draw, b_cube_draw, c_cube_draw, d_cube_draw)
+        print(past_equations[num_of_equations])
+
     if selected_value.get() == 'exponential equation a^x':
         expo_base_draw = int(expo_base.get())
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
@@ -248,6 +259,9 @@ def draw_graph(a_x,
             except:
                 continue
             x_to_draw.append(x)
+
+        past_equations[num_of_equations] = ExponentialEquationAX(expo_base_draw)
+        print(past_equations[num_of_equations])
 
     if selected_value.get() == 'exponential equation x^a':
         exponent_draw = int(exponent.get())
@@ -258,6 +272,9 @@ def draw_graph(a_x,
                 continue
             x_to_draw.append(x)
 
+        past_equations[num_of_equations] = ExponentialEquationXA(exponent_draw)
+        print(past_equations[num_of_equations])
+
     if selected_value.get() == 'logarithmic equation log a (x)':
         log_base_draw = int(log_base.get())
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
@@ -266,6 +283,9 @@ def draw_graph(a_x,
             except:
                 continue
             x_to_draw.append(x)
+
+        past_equations[num_of_equations] = LogarithmicEquationAX(log_base_draw)
+        print(past_equations[num_of_equations])
 
     if selected_value.get() == 'logarithmic equation log x (a)':
         log_inside_draw = int(log_inside.get())
@@ -276,6 +296,9 @@ def draw_graph(a_x,
                 continue
             x_to_draw.append(x)
 
+        past_equations[num_of_equations] = LogarithmicEquationXA(log_inside_draw)
+        print(past_equations[num_of_equations])
+
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw, c=color.get())
     plt.axvline(x=0, c='black')
@@ -284,6 +307,9 @@ def draw_graph(a_x,
     plt.xlabel("X")
     plt.ylabel("Y")
 
+    Label(past_equation_container, text=past_equations[num_of_equations]).pack(anchor="w")
+    root.update()
+    print("test")
     plt.show()
 
 
@@ -317,5 +343,11 @@ color.set("black")
 
 beginner_entry = Entry(function_entry_frame, width=20, state='disabled')
 beginner_entry.grid(row=0)
+
+past_equation_container = Frame(root)
+past_equation_container.grid(row=5, sticky="w")
+
+past_equations = {}
+num_of_equations = 0
 
 root.mainloop()
