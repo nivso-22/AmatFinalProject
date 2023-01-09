@@ -3,8 +3,13 @@ import matplotlib.pyplot as plt
 import math
 
 
+def select_color(*args):
+    global color
+    print(color.get())
+
+
 def change_value(*args):
-    global root, beginner_entry, function_entry_frame
+    global root, beginner_entry, function_entry_frame, radio_container, color
     root.geometry("150x300")
     drop_value = selected_value.get()
     print(drop_value)
@@ -50,7 +55,16 @@ def change_value(*args):
                                    log_inside
                                    )
     )
-    graph_button.grid(row=3)
+    graph_button.grid(row=4)
+
+    black_graph_color = Radiobutton(radio_container, text="black", variable=color, value="black", command=select_color)
+    black_graph_color.grid(row=0, column=0, sticky='w')
+    blue_graph_color = Radiobutton(radio_container, text="blue", variable=color, value="blue", command=select_color)
+    blue_graph_color.grid(row=1, column=0, sticky='w')
+    yellow_graph_color = Radiobutton(radio_container, text="yellow", variable=color, value="yellow", command=select_color)
+    yellow_graph_color.grid(row=2, column=0, sticky='w')
+    red_graph_color = Radiobutton(radio_container, text="red", variable=color, value="red", command=select_color)
+    red_graph_color.grid(row=3, column=0, sticky='w')
 
     root.update()
 
@@ -192,7 +206,7 @@ def draw_graph(a_x,
                log_base,
                log_inside
                ):
-    global selected_value
+    global selected_value, color
     print("imagine i made a graph here")
 
     x_to_draw = []
@@ -255,12 +269,13 @@ def draw_graph(a_x,
             y_to_draw.append(math.log(log_inside_draw, x))
 
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
-    plt.plot(x_to_draw, y_to_draw)
+    plt.plot(x_to_draw, y_to_draw, c=color.get())
     plt.axvline(x=0, c='black')
     plt.axhline(y=0, c='black')
-    plt.grid()
+    plt.grid(True)
     plt.xlabel("X")
     plt.ylabel("Y")
+
     plt.show()
 
 
@@ -285,6 +300,12 @@ selected_value.trace('w', change_value)
 
 function_entry_frame = Frame(root)
 function_entry_frame.grid(row=2)
+
+radio_container = Frame(root)
+radio_container.grid(row=3, sticky="w")
+
+color = StringVar()
+color.set("black")
 
 beginner_entry = Entry(function_entry_frame, width=20, state='disabled')
 beginner_entry.grid(row=0)
