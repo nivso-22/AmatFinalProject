@@ -243,30 +243,38 @@ def draw_graph(a_x,
     if selected_value.get() == 'exponential equation a^x':
         expo_base_draw = int(expo_base.get())
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            try:
+                y_to_draw.append(expo_base_draw ** x)
+            except:
+                continue
             x_to_draw.append(x)
-            y_to_draw.append(expo_base_draw**x)
 
     if selected_value.get() == 'exponential equation x^a':
         exponent_draw = int(exponent.get())
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
+            try:
+                y_to_draw.append(x**exponent_draw)
+            except:
+                continue
             x_to_draw.append(x)
-            y_to_draw.append(x**exponent_draw)
 
     if selected_value.get() == 'logarithmic equation log a (x)':
         log_base_draw = int(log_base.get())
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            if x <= 0:
+            try:
+                y_to_draw.append(math.log(x, log_base_draw))
+            except:
                 continue
             x_to_draw.append(x)
-            y_to_draw.append(math.log(x, log_base_draw))
 
     if selected_value.get() == 'logarithmic equation log x (a)':
         log_inside_draw = int(log_inside.get())
         for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            if x <= 0 or x == 1:
+            try:
+                y_to_draw.append(math.log(log_inside_draw, x))
+            except:
                 continue
             x_to_draw.append(x)
-            y_to_draw.append(math.log(log_inside_draw, x))
 
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw, c=color.get())
