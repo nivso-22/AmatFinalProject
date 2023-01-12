@@ -81,3 +81,17 @@ class ExponentialEquationXA:
     def __str__(self):
         return "X^" + str(self.a)
 
+
+class CircleEquation:
+    a = 0
+    b = 2
+    c = 2
+
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def __str__(self):
+        return "(x-" + str(self.a) + ")² + (y-" + str(self.b) + ")² = " + str(self.c)
+
