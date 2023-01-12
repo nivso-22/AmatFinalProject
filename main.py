@@ -10,7 +10,7 @@ def select_color(*args):
 
 
 def change_value(*args):
-    global root, beginner_entry, function_entry_frame, radio_container, color
+    global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool
     root.geometry("150x300")
     drop_value = selected_value.get()
     print(drop_value)
@@ -53,7 +53,10 @@ def change_value(*args):
                                    expo_base,
                                    exponent,
                                    log_base,
-                                   log_inside
+                                   log_inside,
+                                   circle_x,
+                                   circle_y,
+                                   circle_rad_squared
                                    )
     )
     graph_button.grid(row=4)
@@ -66,6 +69,14 @@ def change_value(*args):
     yellow_graph_color.grid(row=2, column=0, sticky='w')
     red_graph_color = Radiobutton(radio_container, text="red", variable=color, value="red", command=select_color)
     red_graph_color.grid(row=3, column=0, sticky='w')
+
+    extremum_checkbox = Checkbutton(radio_container,
+                                    text="show extremums",
+                                    variable=extremum_bool,
+                                    onvalue=True,
+                                    offvalue=False,
+                                    command="")
+    extremum_checkbox.grid(row=0, column=1)
 
     root.update()
 
@@ -87,6 +98,10 @@ def change_value(*args):
 
     log_base = Entry(function_entry_frame, width=3)
     log_inside = Entry(function_entry_frame, width=3)
+
+    circle_x = Entry(function_entry_frame, width=3)
+    circle_y = Entry(function_entry_frame, width=3)
+    circle_rad_squared = Entry(function_entry_frame, width=3)
 
     if drop_value == 'linear equation':
         root.update()
@@ -187,6 +202,23 @@ def change_value(*args):
 
         root.geometry("200x300")
 
+    if drop_value == 'circle':
+        x_circle_text = Label(function_entry_frame, text="(x-")
+        x_closer_text = Label(function_entry_frame, text=")² + (y -")
+        y_closer_text = Label(function_entry_frame, text=")² = ")
+
+        x_circle_text.grid(row=1, column=0)
+        circle_x.grid(row=1, column=1)
+        circle_x.insert(0, "0")
+        x_closer_text.grid(row=1, column=2)
+        circle_y.grid(row=1, column=3)
+        circle_y.insert(0, "0")
+        y_closer_text.grid(row=1, column=4)
+        circle_rad_squared.grid(row=1, column=5)
+        circle_rad_squared.insert(0, "0")
+
+        root.geometry("200x300")
+
     root.update()
 
 
@@ -205,9 +237,12 @@ def draw_graph(a_x,
                expo_base,
                exponent,
                log_base,
-               log_inside
+               log_inside,
+               circle_x,
+               circle_y,
+               circle_rad_squared
                ):
-    global selected_value, color, past_equations, num_of_equations, past_equation_container
+    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic
     print("imagine i made a graph here")
     num_of_equations += 1
 
@@ -299,6 +334,17 @@ def draw_graph(a_x,
         past_equations[num_of_equations] = LogarithmicEquationXA(log_inside_draw)
         print(past_equations[num_of_equations])
 
+    if selected_value.get() == 'circle':
+        circle_x_draw = int(circle_x.get())
+        circle_y_draw = int(circle_y.get())
+        circle_rad_squared_draw = int(circle_rad_squared.get())
+        for x in range(circle_x_draw-circle_rad_squared_draw, circle_x_draw+circle_rad_squared_draw+ 1):
+            x_to_draw.append(x)
+            y_to_draw.append(math.sqrt(circle_rad_squared_draw**2-x**2)-circle_y_draw)
+
+        past_equations[num_of_equations] = CircleEquation(circle_x_draw, circle_y_draw, circle_rad_squared_draw)
+        print(past_equations[num_of_equations])
+
     print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
     plt.plot(x_to_draw, y_to_draw, c=color.get())
     plt.axvline(x=0, c='black')
@@ -308,6 +354,14 @@ def draw_graph(a_x,
     plt.ylabel("Y")
 
     Label(past_equation_container, text=past_equations[num_of_equations]).pack(anchor="w")
+
+    if selected_value.get() == 'circle':
+        x_to_draw=[]
+        y_to_draw=[]
+        for x in range(circle_x_draw-circle_rad_squared_draw, circle_x_draw+circle_rad_squared_draw + 1):
+            x_to_draw.append(x)
+            y_to_draw.append(-math.sqrt(circle_rad_squared_draw**2-x**2)-circle_y_draw)
+            plt.plot(x_to_draw, y_to_draw, c=color.get())
     root.update()
     print("test")
     plt.show()
@@ -325,7 +379,8 @@ options = ['linear equation',
            'exponential equation a^x',
            'exponential equation x^a',
            'logarithmic equation log a (x)',
-           'logarithmic equation log x (a)']
+           'logarithmic equation log x (a)',
+           'circle']
 
 dropdown = OptionMenu(root, selected_value,   *options)
 dropdown.grid(row=0)
@@ -349,5 +404,8 @@ past_equation_container.grid(row=5, sticky="w")
 
 past_equations = {}
 num_of_equations = 0
+
+extremum_bool = BooleanVar()
+extremum_dic = {}
 
 root.mainloop()
