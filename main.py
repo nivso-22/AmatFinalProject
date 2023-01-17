@@ -1,6 +1,5 @@
 from tkinter import *
 import matplotlib.pyplot as plt
-import math
 from equationClasses import *
 
 
@@ -75,7 +74,7 @@ def change_value(*args):
                                     variable=extremum_bool,
                                     onvalue=True,
                                     offvalue=False,
-                                    command="")
+                                    command=lambda: extremum_bool.set(True))
     extremum_checkbox.grid(row=0, column=1)
 
     root.update()
@@ -246,107 +245,42 @@ def draw_graph(a_x,
     print("imagine i made a graph here")
     num_of_equations += 1
 
-    x_to_draw = []
-    y_to_draw = []
-
     if selected_value.get() == 'linear equation':
-        a_x_draw = int(a_x.get())
-        b_y_draw = int(b_y.get())
-        c_draw = int(c.get())
-        print(a_x_draw, "x +", b_y_draw, "y +", c_draw, "= 0 ")
-
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            x_to_draw.append(x)
-            y_to_draw.append((0-a_x_draw/b_y_draw)*x + 0-c_draw/b_y_draw)
-
-        past_equations[num_of_equations] = LinearEquation(a_x_draw, b_y_draw, c_draw)
+        past_equations[num_of_equations] = LinearEquation(a_x.get(), b_y.get(), c.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
     if selected_value.get() == 'quadratic equation':
-        a_x_quad_draw = int(a_x_quad.get())
-        b_quad_draw = int(b_quad.get())
-        c_quad_draw = int(c_quad.get())
-        print(a_x_quad_draw, "x² +", b_quad_draw, "x +", c_quad_draw, "= 0 ")
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            x_to_draw.append(x)
-            y_to_draw.append((a_x_quad_draw*x**2 + b_quad_draw*x + c_quad_draw))
-
-        past_equations[num_of_equations] = QuadraticEquation(a_x_quad_draw, b_quad_draw, c_quad_draw)
+        past_equations[num_of_equations] = QuadraticEquation(a_x_quad.get(), b_quad.get(), c_quad.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
     if selected_value.get() == 'cubic equation':
-        a_cube_draw = int(a_x_cube.get())
-        b_cube_draw = int(b_x_cube.get())
-        c_cube_draw = int(c_x_cube.get())
-        d_cube_draw = int(d_cube.get())
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            x_to_draw.append(x)
-            y_to_draw.append((a_cube_draw*x**3 + b_cube_draw*x**2 + c_cube_draw*x + d_cube_draw))
-
-        past_equations[num_of_equations] = CubicEquation(a_cube_draw, b_cube_draw, c_cube_draw, d_cube_draw)
+        past_equations[num_of_equations] = CubicEquation(a_x_cube.get(), b_x_cube.get(), c_x_cube.get(), d_cube.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
     if selected_value.get() == 'exponential equation a^x':
-        expo_base_draw = int(expo_base.get())
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            try:
-                y_to_draw.append(expo_base_draw ** x)
-            except:
-                continue
-            x_to_draw.append(x)
-
-        past_equations[num_of_equations] = ExponentialEquationAX(expo_base_draw)
+        past_equations[num_of_equations] = ExponentialEquationAX(expo_base.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
     if selected_value.get() == 'exponential equation x^a':
-        exponent_draw = int(exponent.get())
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            try:
-                y_to_draw.append(x**exponent_draw)
-            except:
-                continue
-            x_to_draw.append(x)
-
-        past_equations[num_of_equations] = ExponentialEquationXA(exponent_draw)
+        past_equations[num_of_equations] = ExponentialEquationXA(exponent.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
     if selected_value.get() == 'logarithmic equation log a (x)':
-        log_base_draw = int(log_base.get())
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            try:
-                y_to_draw.append(math.log(x, log_base_draw))
-            except:
-                continue
-            x_to_draw.append(x)
-
-        past_equations[num_of_equations] = LogarithmicEquationAX(log_base_draw)
+        past_equations[num_of_equations] = LogarithmicEquationAX(log_base.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
     if selected_value.get() == 'logarithmic equation log x (a)':
-        log_inside_draw = int(log_inside.get())
-        for x in range(int(range_beginning.get()), int(range_end.get())+1):
-            try:
-                y_to_draw.append(math.log(log_inside_draw, x))
-            except:
-                continue
-            x_to_draw.append(x)
-
-        past_equations[num_of_equations] = LogarithmicEquationXA(log_inside_draw)
+        past_equations[num_of_equations] = LogarithmicEquationXA(log_inside.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
-    if selected_value.get() == 'circle':
-        circle_x_draw = int(circle_x.get())
-        circle_y_draw = int(circle_y.get())
-        circle_rad_squared_draw = int(circle_rad_squared.get())
-        for x in range(circle_x_draw-circle_rad_squared_draw, circle_x_draw+circle_rad_squared_draw+ 1):
-            x_to_draw.append(x)
-            y_to_draw.append(math.sqrt(circle_rad_squared_draw**2-x**2)-circle_y_draw)
-
-        past_equations[num_of_equations] = CircleEquation(circle_x_draw, circle_y_draw, circle_rad_squared_draw)
-        print(past_equations[num_of_equations])
-
-    print("in range: ", int(range_beginning.get()), "≤ X ≤", int(range_end.get()))
-    plt.plot(x_to_draw, y_to_draw, c=color.get())
+# add a circle here at some point
+    plt.close()
+    for equation in past_equations:
+        plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color())
+        try:
+            plt.plot(past_equations[equation].get_extrema())
+        except:
+            print("no extrema")
     plt.axvline(x=0, c='black')
     plt.axhline(y=0, c='black')
     plt.grid(True)
@@ -354,15 +288,6 @@ def draw_graph(a_x,
     plt.ylabel("Y")
 
     Label(past_equation_container, text=past_equations[num_of_equations]).pack(anchor="w")
-
-    if selected_value.get() == 'circle':
-        x_to_draw=[]
-        y_to_draw=[]
-        for x in range(circle_x_draw-circle_rad_squared_draw, circle_x_draw+circle_rad_squared_draw + 1):
-            x_to_draw.append(x)
-            y_to_draw.append(-math.sqrt(circle_rad_squared_draw**2-x**2)-circle_y_draw)
-            plt.plot(x_to_draw, y_to_draw, c=color.get())
-    root.update()
     print("test")
     plt.show()
 
@@ -407,5 +332,6 @@ num_of_equations = 0
 
 extremum_bool = BooleanVar()
 extremum_dic = {}
+
 
 root.mainloop()
