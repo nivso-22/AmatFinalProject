@@ -11,3 +11,5 @@ select the type of equation and the range and press graph.
 Also, you should brobaly resize the window to  a 
 square
 
+if you want to send someone you graph, select export
+if you got sent a graph select import and write the path of the file
