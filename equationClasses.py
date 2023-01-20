@@ -31,6 +31,9 @@ class LinearEquation:
             y_list.append((-self.a_x/self.b_y)*x + -self.c/self.b_y)
         return x_list, y_list
 
+    def get_export(self):
+        return ['l', str(self.a_x), str(self.b_y), str(self.c), "0", self.color, str(self.range_start), str(self.range_end)]
+
 
 class QuadraticEquation:
     a_x_quad = 0
@@ -65,6 +68,10 @@ class QuadraticEquation:
 
     def get_extrema(self):
         return (-self.b_x) / 2*self.a_x_quad, self.c - (self.b_x**2/4*self.a_x_quad)
+
+    def get_export(self):
+        return ['q', str(self.a_x_quad), str(self.b_y), str(self.c), "0", self.color, str(self.range_start),
+                str(self.range_end)]
 
 
 class CubicEquation:
@@ -110,6 +117,10 @@ class CubicEquation:
 
         self.y_extremum_1 = self.x_extremum_1 ** 3 * self.a_x_cube + self.x_extremum_1 ** 2 * self.b_x + self.x_extremum_1 * self.c_x + self.d
         self.y_extremum_2 = self.x_extremum_2 ** 3 * self.a_x_cube + self.x_extremum_2 ** 2 * self.b_x + self.x_extremum_2 * self.c_x + self.d
+        
+
+    def get_export(self):
+        return ['c', str(self.a_x_cube), str(self.b_x), str(self.c_x), str(self.d), self.color, str(self.range_start), str(self.range_end)]
 
 
 class LogarithmicEquationAX:
@@ -134,10 +145,16 @@ class LogarithmicEquationAX:
         x_list = []
         y_list = []
         for x in range(self.range_start, self.range_end + 1):
+            if x < 1:
+                continue
             x_list.append(x)
             y_list.append(math.log(x, self.a))
 
         return x_list, y_list
+
+    def get_export(self):
+        return ['l-ax', str(self.a), "0", "0", "0", self.color, str(self.range_start),
+                str(self.range_end)]
 
 
 class LogarithmicEquationXA:
@@ -162,10 +179,16 @@ class LogarithmicEquationXA:
         x_list = []
         y_list = []
         for x in range(self.range_start, self.range_end + 1):
+            if x < 1:
+                continue
             x_list.append(x)
             y_list.append(math.log(self.a, x))
 
         return x_list, y_list
+
+    def get_export(self):
+        return ['l-xa', str(self.a), "0", "0", "0", self.color, str(self.range_start),
+                str(self.range_end)]
 
 
 class ExponentialEquationAX:
@@ -190,10 +213,16 @@ class ExponentialEquationAX:
         x_list = []
         y_list = []
         for x in range(self.range_start, self.range_end + 1):
+            if x < 1:
+                continue
             x_list.append(x)
             y_list.append(self.a ** x)
 
         return x_list, y_list
+
+    def get_export(self):
+        return ['e-ax', str(self.a), "0", "0", "0", self.color, str(self.range_start),
+                str(self.range_end)]
 
 
 class ExponentialEquationXA:
@@ -218,10 +247,16 @@ class ExponentialEquationXA:
         x_list = []
         y_list = []
         for x in range(self.range_start, self.range_end + 1):
+            if x < 1:
+                continue
             x_list.append(x)
             y_list.append(x**self.a)
 
         return x_list, y_list
+
+    def get_export(self):
+        return ['e-xa', str(self.a), "0", "0", "0", self.color, str(self.range_start),
+                str(self.range_end)]
 
 
 class CircleEquation:
