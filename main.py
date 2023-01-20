@@ -80,7 +80,7 @@ def select_color(*args):
 
 
 def change_value(*args):
-    global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool
+    global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool, scale_graph
     root.geometry("150x350")
     drop_value = selected_value.get()
     print(drop_value)
@@ -144,9 +144,12 @@ def change_value(*args):
                                     text="show extremums",
                                     variable=extremum_bool,
                                     onvalue=True,
-                                    offvalue=False,
-                                    command=lambda: extremum_bool.set(True))
+                                    offvalue=False)
     extremum_checkbox.grid(row=0, column=1)
+
+    scale_checkbox = Checkbutton(radio_container, text="scale graph", variable=scale_graph, onvalue=True, offvalue=False)
+    scale_checkbox.grid(row=1, column=1, sticky="w")
+    scale_checkbox.select()
 
     root.update()
 
@@ -312,7 +315,7 @@ def draw_graph(a_x,
                circle_y,
                circle_rad_squared
                ):
-    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic
+    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph
     print("imagine i made a graph here")
     num_of_equations += 1
 
@@ -347,7 +350,7 @@ def draw_graph(a_x,
 # add a circle here at some point
     plt.close()
     for equation in past_equations:
-        plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color())
+        plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph, scaley=scale_graph)
         if extremum_bool.get():
             try:
                 print("extrema")
@@ -415,6 +418,7 @@ exp_imp = OptionMenu(root, exp_imp_str,   *exp_imp_ops)
 exp_imp.grid(row=7)
 exp_imp_str.trace('w', import_export)
 
+scale_graph = BooleanVar()
 
 
 root.mainloop()
