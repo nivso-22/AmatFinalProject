@@ -1,6 +1,77 @@
 from tkinter import *
 import matplotlib.pyplot as plt
 from equationClasses import *
+import csv
+import pandas as pd
+
+
+def Import(path):
+    print("import")
+    print(path)
+    imported_csv = open(path, "r")
+    reader = csv.reader(imported_csv)
+    for func in reader:
+        Func = list(func)
+        print(Func)
+        if not Func:
+            continue
+        if Func[0] == 'l':
+            function = LinearEquation(Func[1], Func[2], Func[3], Func[5], Func[6], Func[7])
+            print(function)
+        if Func[0] == 'q':
+            function = QuadraticEquation(Func[1], Func[2], Func[3], Func[5], Func[6], Func[7])
+            print(function)
+        if Func[0] == 'c':
+            function = CubicEquation(Func[1], Func[2], Func[3],Func[4], Func[5], Func[6], Func[7])
+            print(function)
+        if Func[0] == 'l-ax':
+            function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
+            print(function)
+        if Func[0] == 'l-xa':
+            function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
+            print(function)
+        if Func[0] == 'e-ax':
+            function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
+            print(function)
+        if Func[0] == 'e-xa':
+            function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
+            print(function)
+        try:
+            plt.plot(function.get_plot()[0], function.get_plot()[1], c=function.get_color())
+            print("plot")
+            plt.axvline(x=0, c='black')
+            plt.axhline(y=0, c='black')
+            plt.grid(True)
+            plt.xlabel("X")
+            plt.ylabel("Y")
+        except:
+            print("no func")
+    plt.show()
+
+
+def export():
+    header = ['type', 'a', 'b', 'c', 'd', 'color', 'r-s', 'r-e']
+    export = open('graph.csv', "w")
+    csv_writer = csv.writer(export)
+    csv_writer.writerow(header)
+    for i in past_equations:
+        csv_writer.writerow(past_equations[i].get_export())
+        print(past_equations[i].get_export())
+
+
+def import_export(*args):
+    global past_equations, root
+    root.geometry("150x400")
+    value = exp_imp_str.get()
+    print(value)
+    export_button = Button(root, text="export", command=export)
+    import_button = Button(root, text="import", command=lambda: Import(import_entry.get()))
+    import_entry = Entry(root, width=25)
+    if value == 'export':
+        export_button.grid(row=8)
+    elif value == 'import':
+        import_entry.grid(row=8)
+        import_button.grid(row=9)
 
 
 def select_color(*args):
@@ -10,7 +81,7 @@ def select_color(*args):
 
 def change_value(*args):
     global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool
-    root.geometry("150x300")
+    root.geometry("150x350")
     drop_value = selected_value.get()
     print(drop_value)
 
@@ -120,7 +191,7 @@ def change_value(*args):
         c.insert(0, "0")
         equals_0_text.grid(row=1, column=5)
 
-        root.geometry("185x300")
+        root.geometry("185x350")
         root.update()
 
     if drop_value == 'quadratic equation':
@@ -141,7 +212,7 @@ def change_value(*args):
         c_quad.insert(0, "0")
         equals_0_text.grid(row=1, column=5)
 
-        root.geometry("185x300")
+        root.geometry("185x350")
         root.update()
 
     if drop_value == 'cubic equation':
@@ -163,7 +234,7 @@ def change_value(*args):
         d_cube.insert(0, "0")
         equals_0_text.grid(row=1, column=7)
 
-        root.geometry("215x300")
+        root.geometry("215x350")
 
     if drop_value == 'exponential equation a^x':
         expo_base_text = Label(function_entry_frame, text=" ^X")
@@ -171,7 +242,7 @@ def change_value(*args):
         expo_base.insert(0, "0")
         expo_base_text.grid(row=1, column=1)
 
-        root.geometry("180x300")
+        root.geometry("180x350")
 
     if drop_value == 'exponential equation x^a':
         exponent_text = Label(function_entry_frame, text="X^")
@@ -179,7 +250,7 @@ def change_value(*args):
         exponent.insert(0, "0")
         exponent.grid(row=1, column=1)
 
-        root.geometry("180x300")
+        root.geometry("180x350")
 
     if drop_value == 'logarithmic equation log a (x)':
         log_text = Label(function_entry_frame, text="log")
@@ -189,7 +260,7 @@ def change_value(*args):
         log_inside_text = Label(function_entry_frame, text="(x)")
         log_inside_text.grid(row=1, column=2)
 
-        root.geometry("200x300")
+        root.geometry("200x350")
 
     if drop_value == 'logarithmic equation log x (a)':
         log_x_text = Label(function_entry_frame, text="log x (")
@@ -199,7 +270,7 @@ def change_value(*args):
         second_parenthasis_text = Label(function_entry_frame, text=")")
         second_parenthasis_text.grid(row=1, column=2)
 
-        root.geometry("200x300")
+        root.geometry("200x350")
 
     if drop_value == 'circle':
         x_circle_text = Label(function_entry_frame, text="(x-")
@@ -216,7 +287,7 @@ def change_value(*args):
         circle_rad_squared.grid(row=1, column=5)
         circle_rad_squared.insert(0, "0")
 
-        root.geometry("200x300")
+        root.geometry("200x350")
 
     root.update()
 
@@ -277,10 +348,12 @@ def draw_graph(a_x,
     plt.close()
     for equation in past_equations:
         plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color())
-        try:
-            plt.plot(past_equations[equation].get_extrema())
-        except:
-            print("no extrema")
+        if extremum_bool.get():
+            try:
+                print("extrema")
+                plt.plot(past_equations[equation].get_extrema()[0], past_equations[equation].get_extrema()[1], marker="o", c=color.get())
+            except:
+                print("no extrema")
     plt.axvline(x=0, c='black')
     plt.axhline(y=0, c='black')
     plt.grid(True)
@@ -293,7 +366,7 @@ def draw_graph(a_x,
 
 
 root = Tk()
-root.geometry("150x300")
+root.geometry("150x350")
 
 # dropdown menu
 selected_value = StringVar()
@@ -304,8 +377,7 @@ options = ['linear equation',
            'exponential equation a^x',
            'exponential equation x^a',
            'logarithmic equation log a (x)',
-           'logarithmic equation log x (a)',
-           'circle']
+           'logarithmic equation log x (a)']
 
 dropdown = OptionMenu(root, selected_value,   *options)
 dropdown.grid(row=0)
@@ -332,6 +404,17 @@ num_of_equations = 0
 
 extremum_bool = BooleanVar()
 extremum_dic = {}
+
+
+exp_imp_str = StringVar()
+exp_imp_str.set("select import/export")
+
+exp_imp_ops = ['export', 'import']
+
+exp_imp = OptionMenu(root, exp_imp_str,   *exp_imp_ops)
+exp_imp.grid(row=7)
+exp_imp_str.trace('w', import_export)
+
 
 
 root.mainloop()
