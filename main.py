@@ -2,7 +2,6 @@ from tkinter import *
 import matplotlib.pyplot as plt
 from equationClasses import *
 import csv
-import pandas as pd
 
 
 def Import(path):
@@ -36,6 +35,7 @@ def Import(path):
         if Func[0] == 'e-xa':
             function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
             print(function)
+
         try:
             plt.plot(function.get_plot()[0], function.get_plot()[1], c=function.get_color())
             print("plot")
@@ -60,18 +60,23 @@ def export():
 
 
 def import_export(*args):
-    global past_equations, root
+    global past_equations, root, exp_imp_container
+
+    for widget in exp_imp_container.winfo_children():
+        widget.destroy()
+
     root.geometry("150x400")
     value = exp_imp_str.get()
     print(value)
-    export_button = Button(root, text="export", command=export)
-    import_button = Button(root, text="import", command=lambda: Import(import_entry.get()))
-    import_entry = Entry(root, width=25)
+    export_button = Button(exp_imp_container, text="export", command=export)
+    import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_entry.get()))
+    import_entry = Entry(exp_imp_container, width=25)
+
     if value == 'export':
-        export_button.grid(row=8)
+        export_button.grid(row=0)
     elif value == 'import':
-        import_entry.grid(row=8)
-        import_button.grid(row=9)
+        import_entry.grid(row=0)
+        import_button.grid(row=1)
 
 
 def select_color(*args):
@@ -350,7 +355,7 @@ def draw_graph(a_x,
 # add a circle here at some point
     plt.close()
     for equation in past_equations:
-        plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph, scaley=scale_graph)
+        plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
         if extremum_bool.get():
             try:
                 print("extrema")
@@ -419,6 +424,9 @@ exp_imp.grid(row=7)
 exp_imp_str.trace('w', import_export)
 
 scale_graph = BooleanVar()
+
+exp_imp_container = Frame(root)
+exp_imp_container.grid(row=8)
 
 
 root.mainloop()
