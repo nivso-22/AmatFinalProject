@@ -49,9 +49,9 @@ def Import(path):
     plt.show()
 
 
-def export():
+def export(path_name):
     header = ['type', 'a', 'b', 'c', 'd', 'color', 'r-s', 'r-e']
-    export = open('graph.csv', "w")
+    export = open(f'{path_name}.csv', "w")
     csv_writer = csv.writer(export)
     csv_writer.writerow(header)
     for i in past_equations:
@@ -68,14 +68,18 @@ def import_export(*args):
     root.geometry("150x400")
     value = exp_imp_str.get()
     print(value)
-    export_button = Button(exp_imp_container, text="export", command=export)
-    import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_entry.get()))
-    import_entry = Entry(exp_imp_container, width=15)
+    export_button = Button(exp_imp_container, text="export", command=lambda: export(import_export_entry.get()))
+    import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get()))
+    import_export_entry = Entry(exp_imp_container, width=15)
 
     if value == 'export':
-        export_button.grid(row=0)
+        import_export_entry.grid(row=0)
+        import_export_entry.insert(0, "graph")
+        export_button.grid(row=1, column=0)
+        Label(exp_imp_container, text=".csv").grid(row=0, column=1)
+
     elif value == 'import':
-        import_entry.grid(row=0)
+        import_export_entry.grid(row=0)
         import_button.grid(row=1, column=0)
         Label(exp_imp_container, text=".csv").grid(row=0, column=1)
 
