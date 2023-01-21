@@ -62,8 +62,8 @@ def export():
 def import_export(*args):
     global past_equations, root, exp_imp_container
 
-    for widget in exp_imp_container.winfo_children():
-        widget.destroy()
+    for wid in exp_imp_container.winfo_children():
+        wid.destroy()
 
     root.geometry("150x400")
     value = exp_imp_str.get()
