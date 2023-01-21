@@ -4,12 +4,14 @@ from equationClasses import *
 import csv
 
 
-def Import(path):
+def Import(path, add_to_history):
     print("import")
+    index = len(past_equations)
     print(path)
     imported_csv = open("{path}.csv".format(path=path), "r")
     reader = csv.reader(imported_csv)
     for func in reader:
+        index += 1
         Func = list(func)
         print(Func)
         if not Func:
@@ -44,8 +46,11 @@ def Import(path):
             plt.grid(True)
             plt.xlabel("X")
             plt.ylabel("Y")
+            if add_to_history.get():
+                past_equations[index] = function
         except:
             print("no func")
+
     plt.show()
 
 
@@ -69,8 +74,10 @@ def import_export(*args):
     value = exp_imp_str.get()
     print(value)
     export_button = Button(exp_imp_container, text="export", command=lambda: export(import_export_entry.get()))
-    import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get()))
+    import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get(), add_to_history_bool))
     import_export_entry = Entry(exp_imp_container, width=15)
+    add_to_history_bool = BooleanVar()
+    add_to_history = Checkbutton(exp_imp_container, text="add to history", variable=add_to_history_bool, onvalue=True, offvalue=False)
 
     if value == 'export':
         import_export_entry.grid(row=0)
@@ -82,6 +89,7 @@ def import_export(*args):
         import_export_entry.grid(row=0)
         import_button.grid(row=1, column=0)
         Label(exp_imp_container, text=".csv").grid(row=0, column=1)
+        add_to_history.grid(row=2)
 
 
 def select_color(*args):
@@ -364,7 +372,7 @@ def draw_graph(a_x,
         if extremum_bool.get():
             try:
                 print("extrema")
-                plt.plot(past_equations[equation].get_extrema()[0], past_equations[equation].get_extrema()[1], marker="o", c=color.get())
+                plt.plot(past_equations[equation].get_extrema()[0], past_equations[equation].get_extrema()[1], marker="o", c=color.get(), ls='')
             except:
                 print("no extrema")
     plt.axvline(x=0, c='black')
