@@ -112,12 +112,14 @@ class CubicEquation:
         return x_list, y_list
 
     def get_extrema(self):
+
         self.x_extremum_1 = (-self.b_x - math.sqrt(self.b_x ** 2 - (3 * self.a_x_cube * self.c_x))) / 3 * self.a_x_cube
         self.x_extremum_2 = (-self.b_x + math.sqrt(self.b_x ** 2 - (3 * self.a_x_cube * self.c_x))) / 3 * self.a_x_cube
 
         self.y_extremum_1 = self.x_extremum_1 ** 3 * self.a_x_cube + self.x_extremum_1 ** 2 * self.b_x + self.x_extremum_1 * self.c_x + self.d
         self.y_extremum_2 = self.x_extremum_2 ** 3 * self.a_x_cube + self.x_extremum_2 ** 2 * self.b_x + self.x_extremum_2 * self.c_x + self.d
-        
+
+        return [self.x_extremum_1, self.x_extremum_2], [self.y_extremum_1, self.y_extremum_2]
 
     def get_export(self):
         return ['c', str(self.a_x_cube), str(self.b_x), str(self.c_x), str(self.d), self.color, str(self.range_start), str(self.range_end)]
