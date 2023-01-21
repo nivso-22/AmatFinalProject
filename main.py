@@ -7,7 +7,7 @@ import csv
 def Import(path):
     print("import")
     print(path)
-    imported_csv = open(path, "r")
+    imported_csv = open("{path}.csv".format(path=path), "r")
     reader = csv.reader(imported_csv)
     for func in reader:
         Func = list(func)
@@ -70,13 +70,14 @@ def import_export(*args):
     print(value)
     export_button = Button(exp_imp_container, text="export", command=export)
     import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_entry.get()))
-    import_entry = Entry(exp_imp_container, width=25)
+    import_entry = Entry(exp_imp_container, width=15)
 
     if value == 'export':
         export_button.grid(row=0)
     elif value == 'import':
         import_entry.grid(row=0)
-        import_button.grid(row=1)
+        import_button.grid(row=1, column=0)
+        Label(exp_imp_container, text=".csv").grid(row=0, column=1)
 
 
 def select_color(*args):
