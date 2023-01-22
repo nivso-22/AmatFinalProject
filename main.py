@@ -1,14 +1,23 @@
 from tkinter import *
+from tkinter import filedialog
 import matplotlib.pyplot as plt
 from equationClasses import *
 import csv
+
+
+def open_file(add_to_history):
+    filepath = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
+    Import(filepath, add_to_history)
 
 
 def Import(path, add_to_history):
     print("import")
     index = len(past_equations)
     print(path)
-    imported_csv = open("{path}.csv".format(path=path), "r")
+    if path[-4:] != '.csv':
+        imported_csv = open("{path}.csv".format(path=path), "r")
+    else:
+        imported_csv = open(path, "r")
     reader = csv.reader(imported_csv)
     for func in reader:
         index += 1
@@ -29,7 +38,7 @@ def Import(path, add_to_history):
             function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
             print(function)
         if Func[0] == 'l-xa':
-            function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
+            function = LogarithmicEquationXA(Func[1], Func[5], Func[6], Func[7])
             print(function)
         if Func[0] == 'e-ax':
             function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
@@ -78,6 +87,7 @@ def import_export(*args):
     import_export_entry = Entry(exp_imp_container, width=15)
     add_to_history_bool = BooleanVar()
     add_to_history = Checkbutton(exp_imp_container, text="add to history", variable=add_to_history_bool, onvalue=True, offvalue=False)
+    browse_button = Button(exp_imp_container, text="browse", command=lambda: open_file(add_to_history_bool))
 
     if value == 'export':
         import_export_entry.grid(row=0)
@@ -89,7 +99,8 @@ def import_export(*args):
         import_export_entry.grid(row=0)
         import_button.grid(row=1, column=0)
         Label(exp_imp_container, text=".csv").grid(row=0, column=1)
-        add_to_history.grid(row=2)
+        add_to_history.grid(row=3)
+        browse_button.grid(row=2)
 
 
 def select_color(*args):
