@@ -26,7 +26,7 @@ class LinearEquation:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end):
+        for x in range(self.range_start, self.range_end + 1):
             x_list.append(x)
             y_list.append((-self.a_x/self.b_y)*x + -self.c/self.b_y)
         return x_list, y_list
@@ -37,7 +37,6 @@ class LinearEquation:
 
 class QuadraticEquation:
     a_x_quad = 0
-    b_x = 0
     c = 0
     color = ""
     range_start = 0
@@ -45,7 +44,7 @@ class QuadraticEquation:
 
     def __init__(self, a_x_quad, b_x, c, color, r_s, r_e):
         self.a_x_quad = int(a_x_quad)
-        self.b_y = int(b_x)
+        self.b_x = int(b_x)
         self.c = int(c)
         self.color = color
         self.range_start = int(r_s)
@@ -70,7 +69,7 @@ class QuadraticEquation:
         return (-self.b_x) / 2*self.a_x_quad, self.c - (self.b_x**2/4*self.a_x_quad)
 
     def get_export(self):
-        return ['q', str(self.a_x_quad), str(self.b_y), str(self.c), "0", self.color, str(self.range_start),
+        return ['q', str(self.a_x_quad), str(self.b_x), str(self.c), "0", self.color, str(self.range_start),
                 str(self.range_end)]
 
 
@@ -181,7 +180,7 @@ class LogarithmicEquationXA:
         x_list = []
         y_list = []
         for x in range(self.range_start, self.range_end + 1):
-            if x < 1:
+            if x <= 1:
                 continue
             x_list.append(x)
             y_list.append(math.log(self.a, x))
