@@ -309,6 +309,7 @@ def change_value(*args):
         x_circle_text = Label(function_entry_frame, text="(x-")
         x_closer_text = Label(function_entry_frame, text=")² + (y -")
         y_closer_text = Label(function_entry_frame, text=")² = ")
+        circle_squared_text = Label(function_entry_frame, text="²")
 
         x_circle_text.grid(row=1, column=0)
         circle_x.grid(row=1, column=1)
@@ -319,6 +320,7 @@ def change_value(*args):
         y_closer_text.grid(row=1, column=4)
         circle_rad_squared.grid(row=1, column=5)
         circle_rad_squared.insert(0, "0")
+        circle_squared_text.grid(row=1, column=6)
 
         root.geometry("200x350")
 
