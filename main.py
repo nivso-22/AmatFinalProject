@@ -46,7 +46,8 @@ def Import(path, add_to_history):
         if Func[0] == 'e-xa':
             function = LogarithmicEquationAX(Func[1], Func[5], Func[6], Func[7])
             print(function)
-
+        if Func[0] == 'cr':
+            function = CircleEquation(Func[1], Func[2], Func[3], Func[5])
         try:
             plt.plot(function.get_plot()[0], function.get_plot()[1], c=function.get_color())
             print("plot")
@@ -65,7 +66,7 @@ def Import(path, add_to_history):
 
 def export(path_name):
     header = ['type', 'a', 'b', 'c', 'd', 'color', 'r-s', 'r-e']
-    export = open(f'{path_name}.csv', "w")
+    export = open(f'{path_name}.csv', "w", newline='')
     csv_writer = csv.writer(export)
     csv_writer.writerow(header)
     for i in past_equations:
@@ -376,6 +377,10 @@ def draw_graph(a_x,
         past_equations[num_of_equations] = LogarithmicEquationXA(log_inside.get(), color.get(), range_beginning.get(), range_end.get())
         print(past_equations[num_of_equations])
 
+    if selected_value.get() == 'circle':
+        past_equations[num_of_equations] = CircleEquation(circle_x.get(), circle_y.get(), circle_rad_squared.get(), color.get())
+        print(past_equations[num_of_equations])
+
 # add a circle here at some point
     plt.close()
     for equation in past_equations:
@@ -409,7 +414,8 @@ options = ['linear equation',
            'exponential equation a^x',
            'exponential equation x^a',
            'logarithmic equation log a (x)',
-           'logarithmic equation log x (a)']
+           'logarithmic equation log x (a)',
+           'circle']
 
 dropdown = OptionMenu(root, selected_value,   *options)
 dropdown.grid(row=0)

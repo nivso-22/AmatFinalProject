@@ -1,4 +1,5 @@
 import math
+import matplotlib.pyplot as plt
 
 
 class LinearEquation:
@@ -267,9 +268,9 @@ class CircleEquation:
     color = ""
 
     def __init__(self, a, b, c, color):
-        self.a = a
-        self.b = b
-        self.c = c
+        self.a = int(a)
+        self.b = int(b)
+        self.c = int(c)
         self.color = color
 
     def __str__(self):
@@ -278,5 +279,20 @@ class CircleEquation:
     def get_color(self):
         return self.color
 
+    def get_plot(self):
+        x_list = []
+        y_list = []
+
+        for x in range(self.a - self.c, self.a + self.c+1):
+            x_list.append(x)
+            y_list.append(math.sqrt(self.c**2 - x**2))
+        for x in range(self.a + self.c, self.a - self.c-1, -1):
+            x_list.append(x)
+            y_list.append(-math.sqrt(self.c ** 2 - x ** 2))
+
+        return x_list, y_list
+
+    def get_export(self):
+        return ['cr', str(self.a),str(self.b), str(self.c), "0", self.color, 0, 0]
 
 
