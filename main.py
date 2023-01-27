@@ -1,5 +1,10 @@
 from tkinter import *
 from tkinter import filedialog
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
+from matplotlib.figure import Figure
+import matplotlib.pyplot
 import matplotlib.pyplot as plt
 from equationClasses import *
 import csv
@@ -11,6 +16,7 @@ def open_file(add_to_history):
 
 
 def Import(path, add_to_history):
+    global ax, canvas
     print("import")
     index = len(past_equations)
     print(path)
@@ -49,18 +55,22 @@ def Import(path, add_to_history):
         if Func[0] == 'cr':
             function = CircleEquation(Func[1], Func[2], Func[3], Func[5])
         try:
-            plt.plot(function.get_plot()[0], function.get_plot()[1], c=function.get_color())
+            ax.plot(function.get_plot()[0], function.get_plot()[1], c=function.get_color())
             print("plot")
-            plt.axvline(x=0, c='black')
-            plt.axhline(y=0, c='black')
-            plt.grid(True)
-            plt.xlabel("X")
-            plt.ylabel("Y")
+            ax.axvline(x=0, c='black')
+            ax.axhline(y=0, c='black')
+            ax.grid(True)
+            ax.set_aspect("equal")
             if add_to_history.get():
                 past_equations[index] = function
+
+
         except:
             print("no func")
+    plt.close()
 
+    root.geometry("850x550")
+    canvas.draw()
     plt.show()
 
 
@@ -347,7 +357,7 @@ def draw_graph(a_x,
                circle_y,
                circle_rad_squared
                ):
-    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph
+    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph, ax, graph_container, canvas
     print("imagine i made a graph here")
     num_of_equations += 1
 
@@ -386,26 +396,30 @@ def draw_graph(a_x,
 # add a circle here at some point
     plt.close()
     for equation in past_equations:
-        plt.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
+        ax.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
         if extremum_bool.get():
             try:
                 print("extrema")
-                plt.plot(past_equations[equation].get_extrema()[0], past_equations[equation].get_extrema()[1], marker="o", c=color.get(), ls='')
+                ax.plot(past_equations[equation].get_extrema()[0], past_equations[equation].get_extrema()[1], marker="o", c=color.get(), ls='')
             except:
                 print("no extrema")
-    plt.axvline(x=0, c='black')
-    plt.axhline(y=0, c='black')
-    plt.grid(True)
-    plt.xlabel("X")
-    plt.ylabel("Y")
+    ax.axvline(x=0, c='black')
+    ax.axhline(y=0, c='black')
+    ax.grid(True)
+    ax.set_aspect("equal")
 
     Label(past_equation_container, text=past_equations[num_of_equations]).pack(anchor="w")
     print("test")
+
+    root.geometry("850x550")
+    canvas.draw()
     plt.show()
 
 
 root = Tk()
 root.geometry("150x350")
+
+
 
 # dropdown menu
 selected_value = StringVar()
@@ -459,6 +473,25 @@ scale_graph = BooleanVar()
 
 exp_imp_container = Frame(root)
 exp_imp_container.grid(row=8)
+
+graph_container = Frame(root)
+
+fig = matplotlib.pyplot.figure()
+ax = fig.add_subplot(111)
+
+# Create the Tkinter canvas that will display the plot
+canvas = FigureCanvasTkAgg(fig, master=graph_container)
+canvas.draw()
+
+# Add the canvas to the Tkinter window
+canvas.get_tk_widget()
+
+# Create a toolbar for the plot
+toolbar = NavigationToolbar2Tk(canvas, graph_container)
+toolbar.update()
+canvas.get_tk_widget().pack()
+graph_container.grid(row=0, column=2, rowspan=2000)
+
 
 
 root.mainloop()
