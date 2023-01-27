@@ -395,8 +395,12 @@ def draw_graph(a_x,
 
 # add a circle here at some point
     plt.close()
+    for_deletion = []
     for equation in past_equations:
-        ax.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
+        try:
+            ax.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
+        except:
+            for_deletion.append(equation)
         if extremum_bool.get():
             try:
                 print("extrema")
@@ -410,6 +414,8 @@ def draw_graph(a_x,
 
     Label(past_equation_container, text=past_equations[num_of_equations]).pack(anchor="w")
     print("test")
+    for num in for_deletion:
+        del past_equations[num]
 
     root.geometry("850x550")
     canvas.draw()
