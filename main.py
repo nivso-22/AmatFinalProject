@@ -69,7 +69,7 @@ def Import(path, add_to_history):
             print("no func")
     plt.close()
 
-    root.geometry("850x550")
+
     canvas.draw()
     plt.show()
 
@@ -90,7 +90,7 @@ def import_export(*args):
     for wid in exp_imp_container.winfo_children():
         wid.destroy()
 
-    root.geometry("150x400")
+
     value = exp_imp_str.get()
     print(value)
     export_button = Button(exp_imp_container, text="export", command=lambda: export(import_export_entry.get()))
@@ -121,7 +121,7 @@ def select_color(*args):
 
 def change_value(*args):
     global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool, scale_graph
-    root.geometry("150x350")
+
     drop_value = selected_value.get()
     print(drop_value)
 
@@ -234,7 +234,7 @@ def change_value(*args):
         c.insert(0, "0")
         equals_0_text.grid(row=1, column=5)
 
-        root.geometry("185x350")
+
         root.update()
 
     if drop_value == 'quadratic equation':
@@ -255,7 +255,7 @@ def change_value(*args):
         c_quad.insert(0, "0")
         equals_0_text.grid(row=1, column=5)
 
-        root.geometry("185x350")
+
         root.update()
 
     if drop_value == 'cubic equation':
@@ -277,7 +277,7 @@ def change_value(*args):
         d_cube.insert(0, "0")
         equals_0_text.grid(row=1, column=7)
 
-        root.geometry("215x350")
+
 
     if drop_value == 'exponential equation a^x':
         expo_base_text = Label(function_entry_frame, text=" ^X")
@@ -285,7 +285,7 @@ def change_value(*args):
         expo_base.insert(0, "0")
         expo_base_text.grid(row=1, column=1)
 
-        root.geometry("180x350")
+
 
     if drop_value == 'exponential equation x^a':
         exponent_text = Label(function_entry_frame, text="X^")
@@ -293,7 +293,7 @@ def change_value(*args):
         exponent.insert(0, "0")
         exponent.grid(row=1, column=1)
 
-        root.geometry("180x350")
+
 
     if drop_value == 'logarithmic equation log a (x)':
         log_text = Label(function_entry_frame, text="log")
@@ -303,7 +303,7 @@ def change_value(*args):
         log_inside_text = Label(function_entry_frame, text="(x)")
         log_inside_text.grid(row=1, column=2)
 
-        root.geometry("200x350")
+
 
     if drop_value == 'logarithmic equation log x (a)':
         log_x_text = Label(function_entry_frame, text="log x (")
@@ -313,7 +313,7 @@ def change_value(*args):
         second_parenthasis_text = Label(function_entry_frame, text=")")
         second_parenthasis_text.grid(row=1, column=2)
 
-        root.geometry("200x350")
+
 
     if drop_value == 'circle':
         x_circle_text = Label(function_entry_frame, text="(x-")
@@ -332,7 +332,7 @@ def change_value(*args):
         circle_rad_squared.insert(0, "0")
         circle_squared_text.grid(row=1, column=6)
 
-        root.geometry("200x350")
+
 
     root.update()
 
@@ -417,13 +417,13 @@ def draw_graph(a_x,
     for num in for_deletion:
         del past_equations[num]
 
-    root.geometry("850x550")
+
     canvas.draw()
     plt.show()
 
 
 root = Tk()
-root.geometry("150x350")
+root.geometry("850x550")
 
 
 
