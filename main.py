@@ -10,6 +10,12 @@ from equationClasses import *
 import csv
 
 
+def cleanFrame(frame, for_deletion, index):
+    for widget in frame.winfo_children():
+        widget.destroy()
+    for_deletion.append(index)
+    frame.destroy()
+
 def open_file(add_to_history):
     filepath = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
     Import(filepath, add_to_history)
@@ -357,7 +363,7 @@ def draw_graph(a_x,
                circle_y,
                circle_rad_squared
                ):
-    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph, ax, graph_container, canvas
+    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph, ax, graph_container, canvas, for_deletion
     print("imagine i made a graph here")
     num_of_equations += 1
 
@@ -395,7 +401,35 @@ def draw_graph(a_x,
 
 # add a circle here at some point
     plt.close()
-    for_deletion = []
+
+    for child in past_equation_container.winfo_children():
+        child.destroy()
+
+    frames = {}
+
+    print("test")
+    for num in for_deletion:
+        print(num)
+
+        del past_equations[num]
+        del num
+    print(past_equations)
+    root.update()
+
+    canvas.draw()
+
+    ax.cla()
+
+    for i in past_equations:
+        frames[i] = Frame(past_equation_container)
+        Label(frames[i], text= past_equations[i]).grid(row=0, column=0)
+        Button(frames[i], text="delete", command=lambda: (cleanFrame(frames[i], for_deletion, i), canvas.draw())).grid(row=0, column=1)
+        frames[i].pack()
+
+
+
+
+
     for equation in past_equations:
         try:
             ax.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
@@ -412,10 +446,9 @@ def draw_graph(a_x,
     ax.grid(True)
     ax.set_aspect("equal")
 
-    Label(past_equation_container, text=past_equations[num_of_equations]).pack(anchor="w")
-    print("test")
-    for num in for_deletion:
-        del past_equations[num]
+
+
+
 
 
     canvas.draw()
@@ -497,6 +530,8 @@ toolbar = NavigationToolbar2Tk(canvas, graph_container)
 toolbar.update()
 canvas.get_tk_widget().pack()
 graph_container.grid(row=0, column=2, rowspan=2000)
+
+for_deletion = []
 
 
 
