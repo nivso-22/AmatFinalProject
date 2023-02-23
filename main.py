@@ -1,5 +1,5 @@
-from tkinter import *
 from tkinter import filedialog
+import tkinter
 import matplotlib
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk
@@ -8,6 +8,11 @@ import matplotlib.pyplot
 import matplotlib.pyplot as plt
 from equationClasses import *
 import csv
+from customtkinter import *
+from customtkinter import filedialog
+
+set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
+set_default_color_theme("blue")
 
 
 def cleanFrame(frame, for_deletion, index):
@@ -99,23 +104,23 @@ def import_export(*args):
 
     value = exp_imp_str.get()
     print(value)
-    export_button = Button(exp_imp_container, text="export", command=lambda: export(import_export_entry.get()))
-    import_button = Button(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get(), add_to_history_bool))
-    import_export_entry = Entry(exp_imp_container, width=15)
+    export_button = CTkButton(exp_imp_container, text="export", command=lambda: export(import_export_entry.get()))
+    import_button = CTkButton(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get(), add_to_history_bool))
+    import_export_entry = CTkEntry(exp_imp_container, width=15)
     add_to_history_bool = BooleanVar()
-    add_to_history = Checkbutton(exp_imp_container, text="add to history", variable=add_to_history_bool, onvalue=True, offvalue=False)
-    browse_button = Button(exp_imp_container, text="browse", command=lambda: open_file(add_to_history_bool))
+    add_to_history = CTkCheckBox(exp_imp_container, text="add to history", variable=add_to_history_bool, onvalue=True, offvalue=False)
+    browse_button = CTkButton(exp_imp_container, text="browse", command=lambda: open_file(add_to_history_bool))
 
     if value == 'export':
         import_export_entry.grid(row=0)
         import_export_entry.insert(0, "graph")
         export_button.grid(row=1, column=0)
-        Label(exp_imp_container, text=".csv").grid(row=0, column=1)
+        CTkLabel(exp_imp_container, text=".csv").grid(row=0, column=1)
 
     elif value == 'import':
         import_export_entry.grid(row=0)
         import_button.grid(row=1, column=0)
-        Label(exp_imp_container, text=".csv").grid(row=0, column=1)
+        CTkLabel(exp_imp_container, text=".csv").grid(row=0, column=1)
         add_to_history.grid(row=3)
         browse_button.grid(row=2)
 
@@ -134,14 +139,14 @@ def change_value(*args):
     for widget in function_entry_frame.winfo_children():
         widget.destroy()
 
-    equation_text = Label(root, text="equation:")
+    equation_text = CTkLabel(root, text="equation:")
     equation_text.grid(row=1)
 
     # range variables
-    range_label = Label(function_entry_frame, text="range: ")
-    range_beginning = Entry(function_entry_frame, width=3)
-    x_in_middle = Label(function_entry_frame, text="≤ X ≤")
-    range_end = Entry(function_entry_frame, width=3)
+    range_label = CTkLabel(function_entry_frame, text="range: ")
+    range_beginning = CTkEntry(function_entry_frame, width=3)
+    x_in_middle = CTkLabel(function_entry_frame, text="≤ X ≤")
+    range_end = CTkEntry(function_entry_frame, width=3)
 
     # draw range things
     range_label.grid(row=2, column=1)
@@ -151,7 +156,7 @@ def change_value(*args):
     range_end.grid(row=3, column=2)
     range_end.insert(0, "0")
 
-    graph_button = Button(
+    graph_button = CTkButton(
         root,
         text="graph",
         command=lambda: draw_graph(a_x,
@@ -177,57 +182,57 @@ def change_value(*args):
     )
     graph_button.grid(row=4)
 
-    black_graph_color = Radiobutton(radio_container, text="black", variable=color, value="black", command=select_color)
+    black_graph_color = CTkRadioButton(radio_container, text="black", variable=color, value="black", command=select_color)
     black_graph_color.grid(row=0, column=0, sticky='w')
-    blue_graph_color = Radiobutton(radio_container, text="blue", variable=color, value="blue", command=select_color)
+    blue_graph_color = CTkRadioButton(radio_container, text="blue", variable=color, value="blue", command=select_color)
     blue_graph_color.grid(row=1, column=0, sticky='w')
-    yellow_graph_color = Radiobutton(radio_container, text="yellow", variable=color, value="yellow", command=select_color)
+    yellow_graph_color = CTkRadioButton(radio_container, text="yellow", variable=color, value="yellow", command=select_color)
     yellow_graph_color.grid(row=2, column=0, sticky='w')
-    red_graph_color = Radiobutton(radio_container, text="red", variable=color, value="red", command=select_color)
+    red_graph_color = CTkRadioButton(radio_container, text="red", variable=color, value="red", command=select_color)
     red_graph_color.grid(row=3, column=0, sticky='w')
 
-    extremum_checkbox = Checkbutton(radio_container,
+    extremum_checkbox = CTkCheckBox(radio_container,
                                     text="show extremums",
                                     variable=extremum_bool,
                                     onvalue=True,
                                     offvalue=False)
     extremum_checkbox.grid(row=0, column=1)
 
-    scale_checkbox = Checkbutton(radio_container, text="scale graph", variable=scale_graph, onvalue=True, offvalue=False)
+    scale_checkbox = CTkCheckBox(radio_container, text="scale graph", variable=scale_graph, onvalue=True, offvalue=False)
     scale_checkbox.grid(row=1, column=1, sticky="w")
     scale_checkbox.select()
 
     root.update()
 
-    a_x = Entry(function_entry_frame, width=3)
-    b_y = Entry(function_entry_frame, width=3)
-    c = Entry(function_entry_frame, width=3)
+    a_x = CTkEntry(function_entry_frame, width=3)
+    b_y = CTkEntry(function_entry_frame, width=3)
+    c = CTkEntry(function_entry_frame, width=3)
 
-    a_x_quad = Entry(function_entry_frame, width=3)
-    b_quad = Entry(function_entry_frame, width=3)
-    c_quad = Entry(function_entry_frame, width=3)
+    a_x_quad = CTkEntry(function_entry_frame, width=3)
+    b_quad = CTkEntry(function_entry_frame, width=3)
+    c_quad = CTkEntry(function_entry_frame, width=3)
 
-    a_x_cube = Entry(function_entry_frame, width=3)
-    b_x_cube = Entry(function_entry_frame, width=3)
-    c_x_cube = Entry(function_entry_frame, width=3)
-    d_cube = Entry(function_entry_frame, width=3)
+    a_x_cube = CTkEntry(function_entry_frame, width=3)
+    b_x_cube = CTkEntry(function_entry_frame, width=3)
+    c_x_cube = CTkEntry(function_entry_frame, width=3)
+    d_cube = CTkEntry(function_entry_frame, width=3)
 
-    expo_base = Entry(function_entry_frame, width=3)
-    exponent = Entry(function_entry_frame, width=3)
+    expo_base = CTkEntry(function_entry_frame, width=3)
+    exponent = CTkEntry(function_entry_frame, width=3)
 
-    log_base = Entry(function_entry_frame, width=3)
-    log_inside = Entry(function_entry_frame, width=3)
+    log_base = CTkEntry(function_entry_frame, width=3)
+    log_inside = CTkEntry(function_entry_frame, width=3)
 
-    circle_x = Entry(function_entry_frame, width=3)
-    circle_y = Entry(function_entry_frame, width=3)
-    circle_rad_squared = Entry(function_entry_frame, width=3)
+    circle_x = CTkEntry(function_entry_frame, width=3)
+    circle_y = CTkEntry(function_entry_frame, width=3)
+    circle_rad_squared = CTkEntry(function_entry_frame, width=3)
 
     if drop_value == 'linear equation':
         root.update()
         # create the equation variables
-        x_plus_text = Label(function_entry_frame, text="X + ")
-        y_plus_text = Label(function_entry_frame, text="Y + ")
-        equals_0_text = Label(function_entry_frame, text=" = 0")
+        x_plus_text = CTkLabel(function_entry_frame, text="X + ")
+        y_plus_text = CTkLabel(function_entry_frame, text="Y + ")
+        equals_0_text = CTkLabel(function_entry_frame, text=" = 0")
 
         # draw the equation variables
         a_x.grid(row=1, column=0)
@@ -246,9 +251,9 @@ def change_value(*args):
     if drop_value == 'quadratic equation':
         root.update()
 
-        x_plus_text = Label(function_entry_frame, text="X² + ")
-        y_plus_text = Label(function_entry_frame, text="X + ")
-        equals_0_text = Label(function_entry_frame, text=" = 0")
+        x_plus_text = CTkLabel(function_entry_frame, text="X² + ")
+        y_plus_text = CTkLabel(function_entry_frame, text="X + ")
+        equals_0_text = CTkLabel(function_entry_frame, text=" = 0")
 
         # draw the equation variables
         a_x_quad.grid(row=1, column=0)
@@ -265,10 +270,10 @@ def change_value(*args):
         root.update()
 
     if drop_value == 'cubic equation':
-        x_cubed_text = Label(function_entry_frame, text="X³ + ")
-        x_squared_text = Label(function_entry_frame, text="X² + ")
-        x_single_text = Label(function_entry_frame, text="X + ")
-        equals_0_text = Label(function_entry_frame, text=" = 0")
+        x_cubed_text = CTkLabel(function_entry_frame, text="X³ + ")
+        x_squared_text = CTkLabel(function_entry_frame, text="X² + ")
+        x_single_text = CTkLabel(function_entry_frame, text="X + ")
+        equals_0_text = CTkLabel(function_entry_frame, text=" = 0")
 
         a_x_cube.grid(row=1, column=0)
         a_x_cube.insert(0, "0")
@@ -286,7 +291,7 @@ def change_value(*args):
 
 
     if drop_value == 'exponential equation a^x':
-        expo_base_text = Label(function_entry_frame, text=" ^X")
+        expo_base_text = CTkLabel(function_entry_frame, text=" ^X")
         expo_base.grid(row=1, column=0)
         expo_base.insert(0, "0")
         expo_base_text.grid(row=1, column=1)
@@ -294,7 +299,7 @@ def change_value(*args):
 
 
     if drop_value == 'exponential equation x^a':
-        exponent_text = Label(function_entry_frame, text="X^")
+        exponent_text = CTkLabel(function_entry_frame, text="X^")
         exponent_text.grid(row=1, column=0)
         exponent.insert(0, "0")
         exponent.grid(row=1, column=1)
@@ -302,30 +307,30 @@ def change_value(*args):
 
 
     if drop_value == 'logarithmic equation log a (x)':
-        log_text = Label(function_entry_frame, text="log")
+        log_text = CTkLabel(function_entry_frame, text="log")
         log_text.grid(row=1, column=0)
         log_base.insert(0, "0")
         log_base.grid(row=1, column=1)
-        log_inside_text = Label(function_entry_frame, text="(x)")
+        log_inside_text = CTkLabel(function_entry_frame, text="(x)")
         log_inside_text.grid(row=1, column=2)
 
 
 
     if drop_value == 'logarithmic equation log x (a)':
-        log_x_text = Label(function_entry_frame, text="log x (")
+        log_x_text = CTkLabel(function_entry_frame, text="log x (")
         log_x_text.grid(row=1, column=0)
         log_inside.insert(0, "0")
         log_inside.grid(row=1, column=1)
-        second_parenthasis_text = Label(function_entry_frame, text=")")
+        second_parenthasis_text = CTkLabel(function_entry_frame, text=")")
         second_parenthasis_text.grid(row=1, column=2)
 
 
 
     if drop_value == 'circle':
-        x_circle_text = Label(function_entry_frame, text="(x-")
-        x_closer_text = Label(function_entry_frame, text=")² + (y -")
-        y_closer_text = Label(function_entry_frame, text=")² = ")
-        circle_squared_text = Label(function_entry_frame, text="²")
+        x_circle_text = CTkLabel(function_entry_frame, text="(x-")
+        x_closer_text = CTkLabel(function_entry_frame, text=")² + (y -")
+        y_closer_text = CTkLabel(function_entry_frame, text=")² = ")
+        circle_squared_text = CTkLabel(function_entry_frame, text="²")
 
         x_circle_text.grid(row=1, column=0)
         circle_x.grid(row=1, column=1)
@@ -421,9 +426,9 @@ def draw_graph(a_x,
     ax.cla()
 
     for i in past_equations:
-        frames[i] = Frame(past_equation_container)
-        Label(frames[i], text= past_equations[i]).grid(row=0, column=0)
-        Button(frames[i], text="delete", command=lambda: (cleanFrame(frames[i], for_deletion, i), canvas.draw())).grid(row=0, column=1)
+        frames[i] = CTkFrame(past_equation_container)
+        CTkLabel(frames[i], text= past_equations[i]).grid(row=0, column=0)
+        CTkButton(frames[i], text="delete", command=lambda: (cleanFrame(frames[i], for_deletion, i), canvas.draw())).grid(row=0, column=1)
         frames[i].pack()
 
 
@@ -455,14 +460,19 @@ def draw_graph(a_x,
     plt.show()
 
 
-root = Tk()
+root = CTk()
 root.geometry("850x550")
 
-
+dropdownFrame = CTkFrame(root)
+dropdownFrame.grid(row=0)
 
 # dropdown menu
-selected_value = StringVar()
-selected_value.set("select function type")
+dropdownFrame = CTkFrame(root)
+dropdownFrame.grid(row=0)
+
+# dropdown menu
+selected_value = StringVar(value="select function type")
+
 options = ['linear equation',
            'quadratic equation',
            'cubic equation',
@@ -472,24 +482,23 @@ options = ['linear equation',
            'logarithmic equation log x (a)',
            'circle']
 
-dropdown = OptionMenu(root, selected_value,   *options)
+dropdown = CTkComboBox(dropdownFrame, values=options, command=change_value, variable=selected_value)
 dropdown.grid(row=0)
-selected_value.trace('w', change_value)
 
 
-function_entry_frame = Frame(root)
+function_entry_frame = CTkFrame(root)
 function_entry_frame.grid(row=2)
 
-radio_container = Frame(root)
+radio_container = CTkFrame(root)
 radio_container.grid(row=3, sticky="w")
 
 color = StringVar()
 color.set("black")
 
-beginner_entry = Entry(function_entry_frame, width=20, state='disabled')
+beginner_entry = CTkEntry(function_entry_frame, width=20, state='disabled')
 beginner_entry.grid(row=0)
 
-past_equation_container = Frame(root)
+past_equation_container = CTkFrame(root)
 past_equation_container.grid(row=5, sticky="w")
 
 past_equations = {}
@@ -499,21 +508,22 @@ extremum_bool = BooleanVar()
 extremum_dic = {}
 
 
-exp_imp_str = StringVar()
-exp_imp_str.set("select import/export")
+exp_imp_str = StringVar(value="select import/export")
+
 
 exp_imp_ops = ['export', 'import']
 
-exp_imp = OptionMenu(root, exp_imp_str,   *exp_imp_ops)
-exp_imp.grid(row=7)
-exp_imp_str.trace('w', import_export)
+
+
+exp_imp_dropdown = CTkComboBox(root, values=exp_imp_ops, command=import_export, variable=exp_imp_str)
+exp_imp_dropdown.grid(row=7)
 
 scale_graph = BooleanVar()
 
-exp_imp_container = Frame(root)
+exp_imp_container = CTkFrame(root)
 exp_imp_container.grid(row=8)
 
-graph_container = Frame(root)
+graph_container = CTkFrame(root)
 
 fig = matplotlib.pyplot.figure()
 ax = fig.add_subplot(111)
