@@ -1,0 +1,4 @@
+type,a,b,c,d,color,r-s,r-e
+q,1,4,4,0,red,-12,8
+q,1,-4,4,0,blue,-8,12
+cr,0,0,10,0,black,0,0
