@@ -6,7 +6,7 @@ essentialy, it's like desmos.com but bad.
 You will need to install the matpltlib package for this to run.
 
 select the type of equation and the range and press graph.
-(note: the graphs won't delete themselfs)
+(note: the graphs won't delete themselves)
 
 
 if you want to send someone you graph, select export and name it however you like.
