@@ -1,3 +1,5 @@
+import time
+t1 = time.time()
 from tkinter import filedialog
 import tkinter
 import matplotlib
@@ -20,6 +22,14 @@ def cleanFrame(frame, for_deletion, index):
         widget.destroy()
     for_deletion.append(index)
     frame.destroy()
+
+    for num in for_deletion:
+        print(num)
+
+        past_equations.pop(num)
+        for_deletion.pop(for_deletion.index(num))
+    print(past_equations)
+    root.update()
 
 def open_file(add_to_history):
     filepath = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
@@ -106,7 +116,7 @@ def import_export(*args):
     print(value)
     export_button = CTkButton(exp_imp_container, text="export", command=lambda: export(import_export_entry.get()))
     import_button = CTkButton(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get(), add_to_history_bool))
-    import_export_entry = CTkEntry(exp_imp_container, width=15)
+    import_export_entry = CTkEntry(exp_imp_container, width=120)
     add_to_history_bool = BooleanVar()
     add_to_history = CTkCheckBox(exp_imp_container, text="add to history", variable=add_to_history_bool, onvalue=True, offvalue=False)
     browse_button = CTkButton(exp_imp_container, text="browse", command=lambda: open_file(add_to_history_bool))
@@ -144,9 +154,9 @@ def change_value(*args):
 
     # range variables
     range_label = CTkLabel(function_entry_frame, text="range: ")
-    range_beginning = CTkEntry(function_entry_frame, width=3)
+    range_beginning = CTkEntry(function_entry_frame, width=25)
     x_in_middle = CTkLabel(function_entry_frame, text="≤ X ≤")
-    range_end = CTkEntry(function_entry_frame, width=3)
+    range_end = CTkEntry(function_entry_frame, width=25)
 
     # draw range things
     range_label.grid(row=2, column=1)
@@ -204,28 +214,28 @@ def change_value(*args):
 
     root.update()
 
-    a_x = CTkEntry(function_entry_frame, width=3)
-    b_y = CTkEntry(function_entry_frame, width=3)
-    c = CTkEntry(function_entry_frame, width=3)
+    a_x = CTkEntry(function_entry_frame, width=35)
+    b_y = CTkEntry(function_entry_frame, width=35)
+    c = CTkEntry(function_entry_frame, width=35)
 
-    a_x_quad = CTkEntry(function_entry_frame, width=3)
-    b_quad = CTkEntry(function_entry_frame, width=3)
-    c_quad = CTkEntry(function_entry_frame, width=3)
+    a_x_quad = CTkEntry(function_entry_frame, width=35)
+    b_quad = CTkEntry(function_entry_frame, width=35)
+    c_quad = CTkEntry(function_entry_frame, width=35)
 
-    a_x_cube = CTkEntry(function_entry_frame, width=3)
-    b_x_cube = CTkEntry(function_entry_frame, width=3)
-    c_x_cube = CTkEntry(function_entry_frame, width=3)
-    d_cube = CTkEntry(function_entry_frame, width=3)
+    a_x_cube = CTkEntry(function_entry_frame, width=35)
+    b_x_cube = CTkEntry(function_entry_frame, width=35)
+    c_x_cube = CTkEntry(function_entry_frame, width=35)
+    d_cube = CTkEntry(function_entry_frame, width=35)
 
-    expo_base = CTkEntry(function_entry_frame, width=3)
-    exponent = CTkEntry(function_entry_frame, width=3)
+    expo_base = CTkEntry(function_entry_frame, width=35)
+    exponent = CTkEntry(function_entry_frame, width=35)
 
-    log_base = CTkEntry(function_entry_frame, width=3)
-    log_inside = CTkEntry(function_entry_frame, width=3)
+    log_base = CTkEntry(function_entry_frame, width=35)
+    log_inside = CTkEntry(function_entry_frame, width=35)
 
-    circle_x = CTkEntry(function_entry_frame, width=3)
-    circle_y = CTkEntry(function_entry_frame, width=3)
-    circle_rad_squared = CTkEntry(function_entry_frame, width=3)
+    circle_x = CTkEntry(function_entry_frame, width=35)
+    circle_y = CTkEntry(function_entry_frame, width=35)
+    circle_rad_squared = CTkEntry(function_entry_frame, width=35)
 
     if drop_value == 'linear equation':
         root.update()
@@ -413,13 +423,7 @@ def draw_graph(a_x,
     frames = {}
 
     print("test")
-    for num in for_deletion:
-        print(num)
 
-        del past_equations[num]
-        del num
-    print(past_equations)
-    root.update()
 
     canvas.draw()
 
@@ -428,7 +432,7 @@ def draw_graph(a_x,
     for i in past_equations:
         frames[i] = CTkFrame(past_equation_container)
         CTkLabel(frames[i], text= past_equations[i]).grid(row=0, column=0)
-        CTkButton(frames[i], text="delete", command=lambda: (cleanFrame(frames[i], for_deletion, i), canvas.draw())).grid(row=0, column=1)
+        CTkButton(frames[i], text="delete",width=75, command=lambda: (cleanFrame(frames[i], for_deletion, i), canvas.draw())).grid(row=0, column=1)
         frames[i].pack()
 
 
@@ -461,7 +465,13 @@ def draw_graph(a_x,
 
 
 root = CTk()
-root.geometry("850x550")
+width = root.winfo_screenwidth()
+height = root.winfo_screenheight()
+
+# set the size and position of the window to cover the whole screen
+root.geometry(f"{width}x{height}")
+
+
 
 dropdownFrame = CTkFrame(root)
 dropdownFrame.grid(row=0)
@@ -539,10 +549,11 @@ canvas.get_tk_widget()
 toolbar = NavigationToolbar2Tk(canvas, graph_container)
 toolbar.update()
 canvas.get_tk_widget().pack()
-graph_container.grid(row=0, column=2, rowspan=2000)
+graph_container.grid(row=0, column=2, rowspan=9999)
 
 for_deletion = []
 
 
-
+t2 = time.time()
+print(f"loaded in {t2-t1} sec")
 root.mainloop()
