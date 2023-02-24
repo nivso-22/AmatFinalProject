@@ -18,6 +18,7 @@ set_default_color_theme("blue")
 
 
 def cleanFrame(frame, for_deletion, index):
+    global past_equations, ax, extremum_bool, scale_graph
     for widget in frame.winfo_children():
         widget.destroy()
     for_deletion.append(index)
@@ -30,6 +31,32 @@ def cleanFrame(frame, for_deletion, index):
         for_deletion.pop(for_deletion.index(num))
     print(past_equations)
     root.update()
+    canvas.draw()
+
+    ax.cla()
+
+    for equation in past_equations:
+        try:
+            ax.plot(past_equations[equation].get_plot()[0], past_equations[equation].get_plot()[1], c=past_equations[equation].get_color(), scalex=scale_graph.get(), scaley=scale_graph.get())
+        except:
+            for_deletion.append(equation)
+        if extremum_bool.get():
+            try:
+                print("extrema")
+                ax.plot(past_equations[equation].get_extrema()[0], past_equations[equation].get_extrema()[1], marker="o", c=color.get(), ls='')
+            except:
+                print("no extrema")
+    ax.axvline(x=0, c='black')
+    ax.axhline(y=0, c='black')
+    ax.grid(True)
+    ax.set_aspect("equal")
+
+    print("redrawn")
+
+
+
+    canvas.draw()
+    plt.show()
 
 def open_file(add_to_history):
     filepath = filedialog.askopenfilename(filetypes=[("CSV Files", "*.csv")])
@@ -118,7 +145,7 @@ def import_export(*args):
     import_button = CTkButton(exp_imp_container, text="import", command=lambda: Import(import_export_entry.get(), add_to_history_bool))
     import_export_entry = CTkEntry(exp_imp_container, width=120)
     add_to_history_bool = BooleanVar()
-    add_to_history = CTkCheckBox(exp_imp_container, text="add to history", variable=add_to_history_bool, onvalue=True, offvalue=False)
+    add_to_history = CTkCheckBox(exp_imp_container, text="editable", variable=add_to_history_bool, onvalue=True, offvalue=False)
     browse_button = CTkButton(exp_imp_container, text="browse", command=lambda: open_file(add_to_history_bool))
 
     if value == 'export':
@@ -454,9 +481,6 @@ def draw_graph(a_x,
     ax.axhline(y=0, c='black')
     ax.grid(True)
     ax.set_aspect("equal")
-
-
-
 
 
 
