@@ -287,7 +287,6 @@ class CircleEquation:
             x_list.append(x)
             debug_y = self.b + math.sqrt(abs(self.c**2 - (x-self.a)**2))
             y_list.append(debug_y)
-            print(debug_y >= 0)
         for x in range(self.a + self.c, self.a - self.c-1, -1):
             x_list.append(x)
             debug_y = self.b - math.sqrt(abs(self.c ** 2 - (x - self.a) ** 2))
@@ -299,5 +298,3 @@ class CircleEquation:
 
     def get_export(self):
         return ['cr', str(self.a),str(self.b), str(self.c), "0", self.color, 0, 0]
-
-
