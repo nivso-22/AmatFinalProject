@@ -9,6 +9,5 @@ setup(
     install_requires=[
         'customtkinter',
         'matplotlib',
-        'tkinter',
     ],
 )
