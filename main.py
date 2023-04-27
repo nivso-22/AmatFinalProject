@@ -17,23 +17,21 @@ set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
 set_default_color_theme("blue")
 
 
-def cleanFrame(frame, for_deletion, index:int=None, **index_):
-    global past_equations, ax, extremum_bool, scale_graph
-    for widget in frame.winfo_children():
-        widget.destroy()
-    for_deletion.append(index)
-    frame.destroy()
-
-    for num in for_deletion:
-        print(num)
-
-        past_equations.pop(num)
-        for_deletion.pop(for_deletion.index(num))
-    print(past_equations)
+def cleanFrame():
+    global past_equation_container, past_equations, root
+    for i in past_equation_container.winfo_children():
+        i.destroy()
+    past_equation_container.destroy()
+    past_equation_container = CTkFrame(root)
+    past_equation_container.configure(width=0, height=0)
     root.update()
+    past_equation_container.grid(row=5, sticky="w")
+    past_equations = {}
+    root.update()
+    ax.cla()
     canvas.draw()
 
-    ax.cla()
+
 
     for equation in past_equations:
         try:
@@ -461,8 +459,9 @@ def draw_graph(a_x,
 
         frames[i] = CTkFrame(past_equation_container)
         CTkLabel(frames[i], text= past_equations[i]).grid(row=0, column=0)
-        CTkButton(frames[i], image=tkinter.PhotoImage(file="X.gif").subsample(7),text="", width=40, command=lambda: (cleanFrame(frames[i], for_deletion, index=i), canvas.draw())).grid(row=0, column=1)
         frames[i].pack()
+    clear_all_button = CTkButton(past_equation_container, image=tkinter.PhotoImage(file="X.gif").subsample(7),text="",command=lambda: (cleanFrame(), ax.cla(), plt.show(),canvas.draw(), root.update()))
+    clear_all_button.pack()
 
 
 
