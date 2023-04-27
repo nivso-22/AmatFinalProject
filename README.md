@@ -11,3 +11,7 @@ select the type of equation and the range and press graph.
 
 if you want to send someone you graph, select export and name it however you like.
 if you got sent a graph select import and write the path of the file.
+
+currently setup doesnt work so just paste these commands into the commandline:
+pip install matplotlib
+pip install custom tkinter
