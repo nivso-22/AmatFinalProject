@@ -1,5 +1,5 @@
 import math
-import matplotlib.pyplot as plt
+import numpy
 
 
 class LinearEquation:
@@ -27,7 +27,8 @@ class LinearEquation:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end + 1):
+        for X in range(100*self.range_start, 100*self.range_end + 1):
+            x = X/100
             x_list.append(x)
             y_list.append((-self.a_x/self.b_y)*x + -self.c/self.b_y)
         return x_list, y_list
@@ -60,7 +61,8 @@ class QuadraticEquation:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, int(self.range_end)+1):
+        for X in range(100*self.range_start, 100*int(self.range_end)+1):
+            x = X/100
             x_list.append(x)
             y_list.append(self.a_x_quad * x ** 2 + self.b_x * x + self.c)
 
@@ -105,7 +107,8 @@ class CubicEquation:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end + 1):
+        for X in range(100*self.range_start, 100*self.range_end + 1):
+            x = X/100
             x_list.append(x)
             y_list.append((self.a_x_cube * x ** 3 + self.b_x * x**2 + self.c_x * x + self.d))
 
@@ -146,7 +149,8 @@ class LogarithmicEquationAX:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end + 1):
+        for X in range(100*self.range_start, 100*self.range_end + 1):
+            x = X/100
             if x < 1:
                 continue
             x_list.append(x)
@@ -180,7 +184,8 @@ class LogarithmicEquationXA:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end + 1):
+        for X in range(100*self.range_start, 100*self.range_end + 1):
+            x = X/100
             if x <= 1:
                 continue
             x_list.append(x)
@@ -214,7 +219,8 @@ class ExponentialEquationAX:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end + 1):
+        for X in range(100*self.range_start, 100*self.range_end + 1):
+            x = X/100
             if x < 1:
                 continue
             x_list.append(x)
@@ -248,11 +254,12 @@ class ExponentialEquationXA:
     def get_plot(self):
         x_list = []
         y_list = []
-        for x in range(self.range_start, self.range_end + 1):
-            if x < 1:
+        for X in range(100*self.range_start, 100*self.range_end + 1):
+            x = X/100
+            if x < 0.01:
                 continue
             x_list.append(x)
-            y_list.append(x**self.a)
+            y_list.append(x ** self.a)
 
         return x_list, y_list
 
@@ -283,11 +290,13 @@ class CircleEquation:
         x_list = []
         y_list = []
 
-        for x in range(self.a - self.c, self.a + self.c+1):
+        for X in range(100*(self.a - self.c), 100*(self.a + self.c)+1):
+            x = X/100
             x_list.append(x)
             debug_y = self.b + math.sqrt(abs(self.c**2 - (x-self.a)**2))
             y_list.append(debug_y)
-        for x in range(self.a + self.c, self.a - self.c-1, -1):
+        for X in range(100*(self.a + self.c), 100*(self.a - self.c)-1, -1):
+            x = X/100
             x_list.append(x)
             debug_y = self.b - math.sqrt(abs(self.c ** 2 - (x - self.a) ** 2))
             y_list.append(debug_y)

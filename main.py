@@ -17,7 +17,7 @@ set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
 set_default_color_theme("blue")
 
 
-def cleanFrame(frame, for_deletion, index):
+def cleanFrame(frame, for_deletion, index:int=None, **index_):
     global past_equations, ax, extremum_bool, scale_graph
     for widget in frame.winfo_children():
         widget.destroy()
@@ -52,6 +52,7 @@ def cleanFrame(frame, for_deletion, index):
     ax.set_aspect("equal")
 
     print("redrawn")
+    num_of_equations = len(past_equations)
 
 
 
@@ -457,9 +458,10 @@ def draw_graph(a_x,
     ax.cla()
 
     for i in past_equations:
+
         frames[i] = CTkFrame(past_equation_container)
         CTkLabel(frames[i], text= past_equations[i]).grid(row=0, column=0)
-        CTkButton(frames[i], text="delete",width=75, command=lambda: (cleanFrame(frames[i], for_deletion, i), canvas.draw())).grid(row=0, column=1)
+        CTkButton(frames[i], image=tkinter.PhotoImage(file="X.gif").subsample(7),text="", width=40, command=lambda: (cleanFrame(frames[i], for_deletion, index=i), canvas.draw())).grid(row=0, column=1)
         frames[i].pack()
 
 
