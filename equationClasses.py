@@ -1,5 +1,5 @@
 import math
-import numpy
+import matplotlib.pyplot as plt
 
 
 class LinearEquation:
@@ -307,3 +307,36 @@ class CircleEquation:
 
     def get_export(self):
         return ['cr', str(self.a),str(self.b), str(self.c), "0", self.color, 0, 0]
+
+
+class Elipse:
+    def __init__(self, a, b, color):
+        self.a = int(a)
+        self.b = int(b)
+        self.color = color
+
+    def __str__(self):
+        return str(self.b**2)+"x²+" + str(self.a**2) + "y² = " + str(self.a**2*self.b**2)
+
+    def get_color(self):
+        return self.color
+
+    def get_export(self):
+        return ['e', str(self.a), str(self.b), "0", "0", self.color, 0, 0]
+
+    def get_plot(self):
+        x_list = []
+        y_list = []
+
+        for X in range(100 * -1*self.a, 100 * self.a + 1):
+            x = X / 100
+            x_list.append(x)
+            y = self.b * math.sqrt(1-((x**2)/self.a**2))
+            y_list.append(y)
+        for X in range(100 * self.a, -100*self.a - 1, -1):
+            x = X / 100
+            x_list.append(x)
+            y = -1*self.b * math.sqrt(1 - ((x ** 2) / self.a ** 2))
+            y_list.append(y)
+
+        return x_list, y_list

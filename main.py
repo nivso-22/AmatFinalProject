@@ -101,8 +101,13 @@ def Import(path, add_to_history):
             print(function)
         if Func[0] == 'cr':
             function = CircleEquation(Func[1], Func[2], Func[3], Func[5])
+        if Func[0] == 'e':
+            function = Elipse(Func[1], Func[2], Func[5])
+            print("elipsed")
         try:
-            ax.plot(function.get_plot()[0], function.get_plot()[1], c=function.get_color())
+            ax.plot(function.get_plot()[0],
+                    function.get_plot()[1],
+                    c=function.get_color())
             print("plot")
             ax.axvline(x=0, c='black')
             ax.axhline(y=0, c='black')
@@ -110,8 +115,6 @@ def Import(path, add_to_history):
             ax.set_aspect("equal")
             if add_to_history.get():
                 past_equations[index] = function
-
-
         except:
             print("no func")
     plt.close()
@@ -213,7 +216,9 @@ def change_value(*args):
                                    log_inside,
                                    circle_x,
                                    circle_y,
-                                   circle_rad_squared
+                                   circle_rad_squared,
+                                   elipse_a,
+                                   elipse_b
                                    )
     )
     graph_button.grid(row=4)
@@ -262,6 +267,9 @@ def change_value(*args):
     circle_x = CTkEntry(function_entry_frame, width=35)
     circle_y = CTkEntry(function_entry_frame, width=35)
     circle_rad_squared = CTkEntry(function_entry_frame, width=35)
+
+    elipse_a = CTkEntry(function_entry_frame, width=35)
+    elipse_b = CTkEntry(function_entry_frame, width=35)
 
     if drop_value == 'linear equation':
         root.update()
@@ -379,6 +387,23 @@ def change_value(*args):
         circle_rad_squared.insert(0, "0")
         circle_squared_text.grid(row=1, column=6)
 
+    if drop_value == 'elipse':
+        x_elipse_text = CTkLabel(function_entry_frame, text="x²/")
+        y_elipse_text = CTkLabel(function_entry_frame, text="y²/")
+        elipse_plus_text = CTkLabel(function_entry_frame, text="² +")
+        equals_1_text = CTkLabel(function_entry_frame, text="² = 1")
+
+
+        x_elipse_text.grid(row=1, column=0)
+        elipse_a.grid(row=1, column=1)
+        elipse_a.insert(0, "0")
+
+        elipse_plus_text.grid(row=1, column=2)
+        y_elipse_text.grid(row=1, column=3)
+        elipse_b.grid(row=1, column=4)
+        elipse_b.insert(0, "0")
+        equals_1_text.grid(row=1, column=5)
+
 
 
     root.update()
@@ -402,7 +427,9 @@ def draw_graph(a_x,
                log_inside,
                circle_x,
                circle_y,
-               circle_rad_squared
+               circle_rad_squared,
+               elipse_a,
+               elipse_b
                ):
     global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph, ax, graph_container, canvas, for_deletion
     print("imagine i made a graph here")
@@ -438,6 +465,9 @@ def draw_graph(a_x,
 
     if selected_value.get() == 'circle':
         past_equations[num_of_equations] = CircleEquation(circle_x.get(), circle_y.get(), circle_rad_squared.get(), color.get())
+        print(past_equations[num_of_equations])
+    if selected_value.get() == 'elipse':
+        past_equations[num_of_equations] = Elipse(elipse_a.get(), elipse_b.get(), color.get())
         print(past_equations[num_of_equations])
 
 # add a circle here at some point
@@ -515,7 +545,8 @@ options = ['linear equation',
            'exponential equation x^a',
            'logarithmic equation log a (x)',
            'logarithmic equation log x (a)',
-           'circle']
+           'circle',
+           'elipse']
 
 dropdown = CTkComboBox(dropdownFrame, values=options, command=change_value, variable=selected_value)
 dropdown.grid(row=0)
