@@ -37,7 +37,7 @@ def cleanFrame():
     past_equation_container = CTkFrame(root)
     past_equation_container.configure(width=0, height=0)
     root.update()
-    past_equation_container.grid(row=5, sticky="w")
+    past_equation_container.grid(row=9, sticky="w")
     past_equations = {}
     root.update()
     ax.cla()
@@ -235,7 +235,7 @@ def change_value(*args):
                                    elipse_b
                                    )
     )
-    graph_button.grid(row=5)
+    graph_button.grid(row=8)
 
     black_graph_color = CTkRadioButton(radio_container, text="black", variable=color, value="black", command=select_color)
     black_graph_color.grid(row=0, column=0, sticky='w')
@@ -258,14 +258,14 @@ def change_value(*args):
     scale_checkbox.select()
 
 
-    x_limiter = CTkSlider(radio_container, from_=1, to=100, command= set_x_limit)
-    y_limiter = CTkSlider(radio_container, from_=1, to=100, command=set_y_limit)
+    x_limiter = CTkSlider(root, from_=1, to=100, command= set_x_limit)
+    y_limiter = CTkSlider(root, from_=1, to=100, command=set_y_limit)
 
-    x_limiter.grid(row=4,column=0)
-    x_slider_text.grid(row=4, column=1)
+    x_limiter.grid(row=5,column=0)
+    x_slider_text.grid(row=4, column=0)
 
-    y_limiter.grid(row=5, column=0)
-    y_slider_text.grid(row=5, column=1)
+    y_limiter.grid(row=7, column=0)
+    y_slider_text.grid(row=6, column=0)
 
     root.update()
 
@@ -592,7 +592,7 @@ beginner_entry = CTkEntry(function_entry_frame, width=20, state='disabled')
 beginner_entry.grid(row=0)
 
 past_equation_container = CTkFrame(root)
-past_equation_container.grid(row=5, sticky="w")
+past_equation_container.grid(row=9, sticky="w")
 
 past_equations = {}
 num_of_equations = 0
@@ -600,8 +600,8 @@ num_of_equations = 0
 extremum_bool = BooleanVar()
 extremum_dic = {}
 
-x_slider_text = CTkLabel(radio_container, text="500")
-y_slider_text = CTkLabel(radio_container, text="500")
+x_slider_text = CTkLabel(root, text="500")
+y_slider_text = CTkLabel(root, text="500")
 
 exp_imp_str = StringVar(value="select import/export")
 
@@ -611,12 +611,12 @@ exp_imp_ops = ['export', 'import']
 
 
 exp_imp_dropdown = CTkComboBox(root, values=exp_imp_ops, command=import_export, variable=exp_imp_str)
-exp_imp_dropdown.grid(row=7)
+exp_imp_dropdown.grid(row=10)
 
 scale_graph = BooleanVar()
 
 exp_imp_container = CTkFrame(root)
-exp_imp_container.grid(row=8)
+exp_imp_container.grid(row=11)
 
 graph_container = CTkFrame(root)
 
