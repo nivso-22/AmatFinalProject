@@ -17,6 +17,18 @@ set_appearance_mode("dark")  # Modes: "System" (standard), "Dark", "Light"
 set_default_color_theme("blue")
 
 
+def set_x_limit(value):
+    global root, x_slider_text
+    x_slider_text.configure(text=f'{10*value: .2f}')
+    root.update()
+
+def set_y_limit(value):
+    global  root, y_slider_text
+    y_slider_text.configure(text=f'{10 * value: .2f}')
+    root.update()
+
+
+
 def cleanFrame():
     global past_equation_container, past_equations, root
     for i in past_equation_container.winfo_children():
@@ -63,7 +75,7 @@ def open_file(add_to_history):
 
 
 def Import(path, add_to_history):
-    global ax, canvas
+    global ax, canvas, x_slider_text, y_slider_text
     print("import")
     index = len(past_equations)
     print(path)
@@ -113,6 +125,8 @@ def Import(path, add_to_history):
             ax.axhline(y=0, c='black')
             ax.grid(True)
             ax.set_aspect("equal")
+            ax.set_ylim(0-int(y_slider_text.cget("text")), int(y_slider_text.cget("text")))
+            ax.set_xlim(0-int(x_slider_text.cget("text")), int(x_slider_text.cget("text")))
             if add_to_history.get():
                 past_equations[index] = function
         except:
@@ -170,7 +184,7 @@ def select_color(*args):
 
 
 def change_value(*args):
-    global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool, scale_graph
+    global root, beginner_entry, function_entry_frame, radio_container, color, extremum_bool, scale_graph, x_slider_text, y_slider_text
 
     drop_value = selected_value.get()
     print(drop_value)
@@ -221,7 +235,7 @@ def change_value(*args):
                                    elipse_b
                                    )
     )
-    graph_button.grid(row=4)
+    graph_button.grid(row=5)
 
     black_graph_color = CTkRadioButton(radio_container, text="black", variable=color, value="black", command=select_color)
     black_graph_color.grid(row=0, column=0, sticky='w')
@@ -242,6 +256,16 @@ def change_value(*args):
     scale_checkbox = CTkCheckBox(radio_container, text="scale graph", variable=scale_graph, onvalue=True, offvalue=False)
     scale_checkbox.grid(row=1, column=1, sticky="w")
     scale_checkbox.select()
+
+
+    x_limiter = CTkSlider(radio_container, from_=1, to=100, command= set_x_limit)
+    y_limiter = CTkSlider(radio_container, from_=1, to=100, command=set_y_limit)
+
+    x_limiter.grid(row=4,column=0)
+    x_slider_text.grid(row=4, column=1)
+
+    y_limiter.grid(row=5, column=0)
+    y_slider_text.grid(row=5, column=1)
 
     root.update()
 
@@ -270,6 +294,8 @@ def change_value(*args):
 
     elipse_a = CTkEntry(function_entry_frame, width=35)
     elipse_b = CTkEntry(function_entry_frame, width=35)
+
+
 
     if drop_value == 'linear equation':
         root.update()
@@ -431,7 +457,7 @@ def draw_graph(a_x,
                elipse_a,
                elipse_b
                ):
-    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph, ax, graph_container, canvas, for_deletion
+    global selected_value, color, past_equations, num_of_equations, past_equation_container,extremum_bool, extremum_dic, scale_graph, ax, graph_container, canvas, for_deletion, x_slider_text, y_slider_text
     print("imagine i made a graph here")
     num_of_equations += 1
 
@@ -513,7 +539,8 @@ def draw_graph(a_x,
     ax.grid(True)
     ax.set_aspect("equal")
 
-
+    ax.set_ylim(0 - int(y_slider_text.cget("text")), int(y_slider_text.cget("text")))
+    ax.set_xlim(0 - int(x_slider_text.cget("text")), int(x_slider_text.cget("text")))
 
     canvas.draw()
     plt.show()
@@ -573,6 +600,8 @@ num_of_equations = 0
 extremum_bool = BooleanVar()
 extremum_dic = {}
 
+x_slider_text = CTkLabel(radio_container, text="500")
+y_slider_text = CTkLabel(radio_container, text="500")
 
 exp_imp_str = StringVar(value="select import/export")
 
