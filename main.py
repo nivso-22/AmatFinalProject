@@ -18,13 +18,17 @@ set_default_color_theme("blue")
 
 
 def set_x_limit(value):
-    global root, x_slider_text
-    x_slider_text.configure(text=f'{10*value: .2f}')
+    global root, x_slider_text, ax
+    x_slider_text.configure(text=f'{10*value: .0f}')
+    ax.set_xlim(0-int(x_slider_text.cget("text")), int(x_slider_text.cget("text")))
+    canvas.draw()
     root.update()
 
 def set_y_limit(value):
-    global  root, y_slider_text
-    y_slider_text.configure(text=f'{10 * value: .2f}')
+    global  root, y_slider_text, ax
+    y_slider_text.configure(text=f'{10 * value: .0f}')
+    ax.set_ylim(0 - int(y_slider_text.cget("text")), int(y_slider_text.cget("text")))
+    canvas.draw()
     root.update()
 
 
@@ -125,8 +129,8 @@ def Import(path, add_to_history):
             ax.axhline(y=0, c='black')
             ax.grid(True)
             ax.set_aspect("equal")
-            ax.set_ylim(0-int(y_slider_text.cget("text")), int(y_slider_text.cget("text")))
-            ax.set_xlim(0-int(x_slider_text.cget("text")), int(x_slider_text.cget("text")))
+
+
             if add_to_history.get():
                 past_equations[index] = function
         except:
