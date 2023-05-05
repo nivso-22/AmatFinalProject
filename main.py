@@ -634,11 +634,18 @@ canvas.draw()
 # Add the canvas to the Tkinter window
 canvas.get_tk_widget()
 
+graph_container.grid_rowconfigure(0, weight=1)
+graph_container.grid_columnconfigure(0, weight=1)
+
+# Configure the row and column weights for the main window (root)
+root.grid_rowconfigure(0, weight=1)
+root.grid_columnconfigure(1, weight=1)
+
 # Create a toolbar for the plot
 toolbar = NavigationToolbar2Tk(canvas, graph_container)
 toolbar.update()
-canvas.get_tk_widget().pack()
-graph_container.grid(row=0, column=2, rowspan=9999)
+canvas.get_tk_widget().pack(fill=tkinter.BOTH,expand=True)
+graph_container.grid(row=0, column=1, rowspan=999,columnspan=999, sticky='nsew')
 
 for_deletion = []
 
